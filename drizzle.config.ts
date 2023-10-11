@@ -7,6 +7,7 @@ loadEnvConfig(cwd())
 export default {
     driver: "turso",
     schema: "./src/schema/*.ts",
+    out: "./drizzle/out/",
     dbCredentials: {
         url: env.DATABASE_URL ? env.DATABASE_URL : "",
         authToken: env.DATABASE_AUTH_TOKEN,

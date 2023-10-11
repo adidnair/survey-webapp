@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { languages, webFrameworks } from "../../drizzle/schema";
+import { languages, webFrameworks } from "../../drizzle/out/schema";
 
 const getDbPromise = async () => {
   // Get data
