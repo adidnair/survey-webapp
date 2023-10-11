@@ -27,11 +27,15 @@ const getDbPromise = async () => {
   console.log("database query promise created.")
   return {
     languages: {
-      ids: langs.map((lang) => lang.id),
+      ids: (langs.map((lang) => lang.id)).sort(
+        (a, b) => lang_names[a].localeCompare(lang_names[b])
+      ),
       names: lang_names,
     },
     webfs: {
-      ids: webfs.map((webf) => webf.id),
+      ids: (webfs.map((webf) => webf.id)).sort(
+        (a, b) => webf_names[a].localeCompare(webf_names[b])
+      ),
       names: webf_names,
     },
   }
