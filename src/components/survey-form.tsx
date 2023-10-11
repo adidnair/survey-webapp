@@ -246,7 +246,7 @@ const SurveyForm = () => {
                <WebFrameworks webFrameworks={formData.languages} form={form} field={field} />
               </FormControl>
               <FormDescription>
-                Select all the languages you know about.
+                Select all the web frameworks, libraries or other technologies you know about.
               </FormDescription>
             </FormItem>
           )}}
