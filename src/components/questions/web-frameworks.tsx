@@ -15,41 +15,7 @@ import {
 import { Button } from "../ui/button";
 import { Slider } from "../ui/slider";
 import { FormError } from "../myui/form-error";
-import { formFields } from "../survey-form";
-
-export const webFrameworkValToLabel: Record<string, string> = {}
-
-webFrameworkValToLabel["express"] = "ExpressJS"
-webFrameworkValToLabel["next"] = "NextJS"
-webFrameworkValToLabel["nuxt"] = "NuxtJS"
-webFrameworkValToLabel["astro"] = "Astro"
-webFrameworkValToLabel["react"] = "React"
-webFrameworkValToLabel["flask"] = "Flask"
-webFrameworkValToLabel["django"] = "Django"
-webFrameworkValToLabel["angular"] = "Angular"
-webFrameworkValToLabel["jquery"] = "JQuery"
-webFrameworkValToLabel["rails"] = "Ruby on Rails"
-webFrameworkValToLabel["bootstrap"] = "Bootstrap"
-webFrameworkValToLabel["tailwind"] = "TailwindCSS"
-webFrameworkValToLabel["fastapi"] = "FastAPI"
-webFrameworkValToLabel["aspnet"] = "ASP.NET"
-webFrameworkValToLabel["svelte"] = "Svelte"
-webFrameworkValToLabel["vite"] = "Vite"
-webFrameworkValToLabel["htmx"] = "HTMX"
-webFrameworkValToLabel["laravel"] = "Laravel"
-
-export const web_framework_vals: readonly string[] = [...Object.keys(webFrameworkValToLabel).toSorted()] as const
-
-export type WebFrameworkResponse = {
-  value: string,
-  experience: number,
-  recommendation: number,
-}
-
-export type WebFrameworkEntry = {
-  readonly value: string,
-  readonly label: string,
-}
+import { formType } from "../form-data";
 
 const WebFrameworkError = ({errObject, index, className} : {errObject: FieldErrors, index: number, className?: string}) => {
   if (errObject) {
@@ -95,21 +61,21 @@ export const WebFrameworksHeader = () => {
 }
 
 export const WebFrameworks = ({webFrameworks, form, field} : {
-  webFrameworks: readonly WebFrameworkEntry[],
-  form: UseFormReturn<formFields, any, undefined>,
-  field: ControllerRenderProps<formFields, "webFrameworks">
+  webFrameworks: {ids: number[], names: string[]},
+  form: UseFormReturn<formType, any, undefined>,
+  field: ControllerRenderProps<formType, "webFrameworks">
   }) => {
   return (
     <div className="lg:flex lg:flex-col gap-4">
-      {field.value.map((selected_language, index) => {
+      {field.value.map((selected_framework, selected_framework_index) => {
         return (
 
           <>
-          {form.formState.isSubmitted && <WebFrameworkError errObject={form.formState.errors} index={index}
+          {form.formState.isSubmitted && <WebFrameworkError errObject={form.formState.errors} index={selected_framework_index}
           className="lg:hidden"/>}
           <div
             className="flex flex-col gap-8 lg:flex-row lg:justify-between lg:w-full pt-2 lg:gap-12 max-lg:mb-8"
-            key={selected_language.id}
+            key={selected_framework.id}
           >
             <div className="flex flex-row gap-8">
             <Popover>
@@ -119,7 +85,7 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                   role="combobox"
                   className="w-52 justify-between shrink-0"
                 >
-                  {webFrameworkValToLabel[selected_language.id]}
+                  {webFrameworks.names[selected_framework.id]}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -128,28 +94,28 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                   <CommandInput placeholder="Search language..." />
                   <CommandEmpty>No language found.</CommandEmpty>
                   <CommandGroup className="overflow-y-scroll">
-                    {webFrameworks
-                      .filter((l) => {
+                    {webFrameworks.ids
+                      .filter((wf) => {
                         if (
-                          l.value ===
-                          field.value[index].id
+                          wf ===
+                          field.value[selected_framework_index].id
                         )
                           return true;
                         for (const sl of field.value) {
-                          if (sl.id === l.value) return false;
+                          if (sl.id === wf) return false;
                         }
                         return true;
                       })
-                      .map((language) => (
+                      .map((webFramework_id) => (
                         <CommandItem
-                          value={language.label}
-                          key={language.value}
+                          value={webFrameworks.names[webFramework_id]}
+                          key={webFramework_id}
                           onSelect={() => {
                             form.setValue(field.name,
                               field.value.map((l, li) => {
-                                if (li === index)
+                                if (li === selected_framework_index)
                                   return {
-                                    id: language.value,
+                                    id: webFramework_id,
                                     experience: l.experience,
                                     recommendation:
                                       l.recommendation,
@@ -162,13 +128,13 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                           <Check
                             className={cn(
                               "mr-2 h-4 w-4",
-                              language.value ===
-                                field.value[index].id
+                              webFramework_id ===
+                                field.value[selected_framework_index].id
                                 ? "opacity-100"
                                 : "opacity-0",
                             )}
                           />
-                          {language.label}
+                          {webFrameworks.names[webFramework_id]}
                         </CommandItem>
                       ))}
                   </CommandGroup>
@@ -183,7 +149,7 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                 onClick={() =>
                   form.setValue(field.name,
                     field.value.filter((l) => {
-                      return l.id !== selected_language.id;
+                      return l.id !== selected_framework.id;
                     })
                   )
                 }
@@ -214,7 +180,7 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                 onValueCommit={(val) => {
                   form.setValue(field.name,
                     field.value.map((l, li) => {
-                      if (li === index)
+                      if (li === selected_framework_index)
                         return {
                           id: l.id,
                           experience: val[0],
@@ -250,7 +216,7 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                 onValueCommit={(val) => {
                   form.setValue(field.name,
                     field.value.map((l, li) => {
-                      if (li === index)
+                      if (li === selected_framework_index)
                         return {
                           id: l.id,
                           experience: l.experience,
@@ -270,14 +236,14 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                 onClick={() =>
                   form.setValue(field.name,
                     field.value.filter((l) => {
-                      return l.id !== selected_language.id;
+                      return l.id !== selected_framework.id;
                     })
                   )
                 }
               />
             </div>
           </div>
-          {form.formState.isSubmitted && <WebFrameworkError errObject={form.formState.errors} index={index}
+          {form.formState.isSubmitted && <WebFrameworkError errObject={form.formState.errors} index={selected_framework_index}
           className="max-lg:hidden"/>}
           </>
         );
@@ -299,29 +265,29 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
             <CommandInput placeholder="Search language..." />
             <CommandEmpty>No language found.</CommandEmpty>
             <CommandGroup className="overflow-y-scroll">
-              {webFrameworks
-                .filter((language) => {
-                  for (const l of field.value) {
-                    if (language.value === l.id) return false;
+              {webFrameworks.ids
+                .filter((webFramework_id) => {
+                  for (const wf of field.value) {
+                    if (webFramework_id === wf.id) return false;
                   }
                   return true;
                 })
-                .map((language) => (
+                .map((webFramework_id) => (
                   <CommandItem
-                    value={language.label}
-                    key={language.value}
+                    value={webFrameworks.names[webFramework_id]}
+                    key={webFramework_id}
                     onSelect={() => {
                       form.setValue(field.name, [
                         ...field.value,
                         {
-                          id: language.value,
+                          id: webFramework_id,
                           experience: -1,
                           recommendation: -1,
                         },
                       ]);
                     }}
                   >
-                    {language.label}
+                    {webFrameworks.names[webFramework_id]}
                   </CommandItem>
                 ))}
             </CommandGroup>
