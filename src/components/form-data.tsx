@@ -21,7 +21,6 @@ const getDbPromise = async () => {
   }
   let webf_names: string[] = Array(largest_webf+1)
   for (const webf of webfs) {
-<<<<<<< HEAD
     webf_names[webf.id] = webf.name
   }
 
@@ -36,23 +35,6 @@ const getDbPromise = async () => {
     },
     webFrameworks: {
       ids: webf_ids.sort((a, b) => webf_names[a].localeCompare(webf_names[b])),
-=======
-    lang_names[webf.id] = webf.name
-  }
-
-  console.log("database query promise created.")
-  return {
-    languages: {
-      ids: (langs.map((lang) => lang.id)).sort(
-        (a, b) => lang_names[a].localeCompare(lang_names[b])
-      ),
-      names: lang_names,
-    },
-    webfs: {
-      ids: (webfs.map((webf) => webf.id)).sort(
-        (a, b) => webf_names[a].localeCompare(webf_names[b])
-      ),
->>>>>>> 244f32e2a502d30fedc5a244fe11d6ccde843a45
       names: webf_names,
     },
   }

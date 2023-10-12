@@ -26,11 +26,7 @@ import { FormError } from "./myui/form-error";
 import { use } from "react";
 import { useFormPromise } from "./form-provider";
 import { skill_levels } from "./questions/skill";
-<<<<<<< HEAD
 import { WebFrameworks, WebFrameworksHeader } from "./questions/web-frameworks";
-=======
-import { WebFrameworks } from "./questions/web-frameworks";
->>>>>>> 244f32e2a502d30fedc5a244fe11d6ccde843a45
 
 const SurveyForm = () => {
   const formData = use(useFormPromise())
@@ -56,22 +52,14 @@ const SurveyForm = () => {
     skill: z.enum(skill_levels.map((val) => val[0]) as [string, ...string[]]),
     languages: z
       .object({
-<<<<<<< HEAD
         id: z.number().int().min(-1).max(formData.languages.names.length-1),
-=======
-        id: z.number().int().min(-1).max(formData.languages.names.length),
->>>>>>> 244f32e2a502d30fedc5a244fe11d6ccde843a45
         experience: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
         recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
       })
       .array(),
     webFrameworks: z
       .object({
-<<<<<<< HEAD
         id: z.number().int().min(-1).max(formData.webFrameworks.names.length-1),
-=======
-        id: z.number().int().min(-1).max(formData.webfs.names.length),
->>>>>>> 244f32e2a502d30fedc5a244fe11d6ccde843a45
         experience: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
         recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
       })
@@ -253,15 +241,9 @@ const SurveyForm = () => {
             return (
             <FormItem className="flex flex-col">
               <FormLabel className="mb-1">Web Frameworks/Libraries</FormLabel>
-<<<<<<< HEAD
               {(field.value.length > 0) && <WebFrameworksHeader />}
               <FormControl>
                <WebFrameworks webFrameworks={formData.webFrameworks} form={form} field={field} />
-=======
-              {(field.value.length > 0) && <LanguagesHeader />}
-              <FormControl>
-               <WebFrameworks webFrameworks={formData.languages} form={form} field={field} />
->>>>>>> 244f32e2a502d30fedc5a244fe11d6ccde843a45
               </FormControl>
               <FormDescription>
                 Select all the web frameworks, libraries or other technologies you know about.
