@@ -21,21 +21,20 @@ const getDbPromise = async () => {
   }
   let webf_names: string[] = Array(largest_webf+1)
   for (const webf of webfs) {
-    lang_names[webf.id] = webf.name
+    webf_names[webf.id] = webf.name
   }
+
+  const lang_ids = (langs.map((lang) => lang.id))  
+  const webf_ids = (webfs.map((webf) => webf.id))
 
   console.log("database query promise created.")
   return {
     languages: {
-      ids: (langs.map((lang) => lang.id)).sort(
-        (a, b) => lang_names[a].localeCompare(lang_names[b])
-      ),
+      ids: lang_ids.sort((a, b) => lang_names[a].localeCompare(lang_names[b])),
       names: lang_names,
     },
-    webfs: {
-      ids: (webfs.map((webf) => webf.id)).sort(
-        (a, b) => webf_names[a].localeCompare(webf_names[b])
-      ),
+    webFrameworks: {
+      ids: webf_ids.sort((a, b) => webf_names[a].localeCompare(webf_names[b])),
       names: webf_names,
     },
   }

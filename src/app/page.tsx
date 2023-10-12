@@ -3,6 +3,18 @@ import SurveyForm from "@/components/survey-form";
 import ToggleTheme from "@/components/toggle-theme";
 import { dbPromise } from "@/components/form-data";
 import { ErrorBoundary } from "react-error-boundary";
+import { Button } from "@/components/ui/button";
+
+const ErrorHappened = () => {
+  return (
+    <div className="flex flex-col gap-6 h-full w-full text-xl items-center justify-center">
+      Something went wrong :/
+      <Button className="w-32">
+        Report
+      </Button>
+    </div>
+  )
+}
 
 export default function Home() {
   return (
@@ -16,7 +28,7 @@ export default function Home() {
         </div>
       </div>
       <div className="mx-8 md:mx-16 lg:mx-32 py-20">
-        <ErrorBoundary fallback={<div>oops!</div>}>
+        <ErrorBoundary fallback={<ErrorHappened />}>
           <FormProvider formPromise={dbPromise}>
             <SurveyForm />
           </FormProvider>
