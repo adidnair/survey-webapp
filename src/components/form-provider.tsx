@@ -5,13 +5,13 @@ import type { dbPromise } from "./form-data";
 
 const FormContext = createContext<typeof dbPromise | null>(null);
 
-export const useFormPromise = () => {
+export const useFormChoicesPromise = () => {
   const data = useContext(FormContext)
   if (!data) throw new Error("form data should be provided as context")
   return data
 }
 
-const FormProvider = ({
+const FormChoicesProvider = ({
   children,
   formPromise,
 }: {
@@ -23,4 +23,4 @@ const FormProvider = ({
   )
 }
 
-export default FormProvider
+export default FormChoicesProvider

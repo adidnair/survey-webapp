@@ -24,12 +24,12 @@ import { toast } from "./ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { FormError } from "./myui/form-error";
 import { use } from "react";
-import { useFormPromise } from "./form-provider";
+import { useFormChoicesPromise } from "./form-provider";
 import { skill_levels } from "./questions/skill";
 import { WebFrameworks, WebFrameworksHeader } from "./questions/web-frameworks";
 
 const SurveyForm = () => {
-  const formData = use(useFormPromise())
+  const formData = use(useFormChoicesPromise())
 
   const formSchema = z.object({
     email: z
@@ -85,6 +85,8 @@ const SurveyForm = () => {
     toast({title: "Success!"})
     console.log("Validation success", values);
     // database push
+    // push user with user data
+    // push responses with foreign key of user
   }
 
   return (

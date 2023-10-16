@@ -1,10 +1,11 @@
-import FormProvider from "@/components/form-provider";
+import FormChoicesProvider from "@/components/form-provider";
 import SurveyForm from "@/components/survey-form";
 import ToggleTheme from "@/components/toggle-theme";
 import { dbPromise } from "@/components/form-data";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
+import SurveyFormSkeleton from "@/components/survey-skeleton";
 
 const SurveyErrorHappened = () => {
   return (
@@ -13,14 +14,6 @@ const SurveyErrorHappened = () => {
       <Button className="w-32">
         Report
       </Button>
-    </div>
-  )
-}
-
-const SurveyLoadingFallback = () => {
-  return (
-    <div className="flex justify-center items-center text-3xl">
-      Survey Loading...
     </div>
   )
 }
@@ -38,10 +31,10 @@ export default function SurveyPage() {
       </div>
       <div className="mx-8 md:mx-16 lg:mx-32 py-20">
         <ErrorBoundary fallback={<SurveyErrorHappened />}>
-          <Suspense fallback=<SurveyLoadingFallback />>
-            <FormProvider formPromise={dbPromise}>
+          <Suspense fallback=<SurveyFormSkeleton />>
+            <FormChoicesProvider formPromise={dbPromise}>
               <SurveyForm />
-            </FormProvider>
+            </FormChoicesProvider>
           </Suspense>
         </ErrorBoundary>
       </div>
