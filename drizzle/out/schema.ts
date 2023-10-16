@@ -16,3 +16,11 @@ export const webFrameworks = sqliteTable("web_frameworks", {
 	id: integer("id").primaryKey(),
 	name: text("name").notNull(),
 });
+
+export const people = sqliteTable("people", {
+	personId: integer("person_id").primaryKey().notNull(),
+	generatedId: text("generated_id").notNull(),
+	email: text("email"),
+	sex: text("sex").notNull(),
+	skill: text("skill").notNull(),
+});

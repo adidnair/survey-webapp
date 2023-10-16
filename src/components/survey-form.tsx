@@ -27,6 +27,8 @@ import { use } from "react";
 import { useFormChoicesPromise } from "./form-provider";
 import { skill_levels } from "./questions/skill";
 import { WebFrameworks, WebFrameworksHeader } from "./questions/web-frameworks";
+import { db } from "@/db/db";
+import { people } from "../../drizzle/out/schema";
 
 const SurveyForm = () => {
   const formData = use(useFormChoicesPromise())
@@ -82,6 +84,12 @@ const SurveyForm = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    const push = db.insert(people).values({
+      generatedId: "aaa",
+      email: values.email,
+      sex: values.sex,
+      skill: values.skill
+    }).run()
     toast({title: "Success!"})
     console.log("Validation success", values);
     // database push
