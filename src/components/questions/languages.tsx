@@ -223,7 +223,7 @@ export const Languages = ({languages, form, field} : {
               <div className="flex flex-col gap-10 xl:flex-row xl:grow xl:gap-4">
                 <div className="flex flex-col gap-4 xl:pl-6">
                   <Label className="text-sm text-muted-foreground pl-4 xl:pl-0">Why did you learn this language?</Label>
-                  <div className="w-96 pl-2 xl:pl-0">
+                  <div className="px-2 xl:w-96 xl:pl-0 oveflow-hidden">
                     <Select onValueChange={(value) => {
                       const new_purpose = value;
                       if (value === "Other (please specify)") {
