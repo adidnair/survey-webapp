@@ -16,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import {
-  LanguagesHeader,
   Languages,
 } from "./questions/languages";
 import { Separator } from "./ui/separator";
@@ -27,8 +26,7 @@ import { use } from "react";
 import { useFormChoicesPromise } from "./form-provider";
 import { skill_levels } from "./questions/skill";
 import { WebFrameworks, WebFrameworksHeader } from "./questions/web-frameworks";
-import { db } from "@/db/db";
-import { people } from "../../drizzle/out/schema";
+import { pushToDB } from "./submit-form";
 
 const SurveyForm = () => {
   const formData = use(useFormChoicesPromise())
@@ -52,18 +50,21 @@ const SurveyForm = () => {
       }),
     sex: z.string(),
     skill: z.enum(skill_levels.map((val) => val[0]) as [string, ...string[]]),
+    // occupation: z.string(),
     languages: z
       .object({
         id: z.number().int().min(-1).max(formData.languages.names.length-1),
-        experience: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
+        proficiency: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
         recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
+        purpose: z.string().min(1, {message: "Please select a reason"}),
       })
       .array(),
     webFrameworks: z
       .object({
         id: z.number().int().min(-1).max(formData.webFrameworks.names.length-1),
-        experience: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
+        proficiency: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
         recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
+        purpose: z.string().min(1, {message: "Please select a reason"}),
       })
       .array(),
   });
@@ -81,18 +82,12 @@ const SurveyForm = () => {
 
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const push = db.insert(people).values({
-      generatedId: "aaa",
-      email: values.email,
-      sex: values.sex,
-      skill: values.skill
-    }).run()
-    toast({title: "Success!"})
-    console.log("Validation success", values);
     // database push
+    toast({title: "Success!"})
+    // pushToDB(values)
     // push user with user data
     // push responses with foreign key of user
   }
@@ -231,7 +226,6 @@ const SurveyForm = () => {
             return (
             <FormItem className="flex flex-col">
               <FormLabel className="mb-1">Languages</FormLabel>
-              {(field.value.length > 0) && <LanguagesHeader />}
               <FormControl>
                <Languages languages={formData.languages} form={form} field={field} />
               </FormControl>
@@ -266,7 +260,7 @@ const SurveyForm = () => {
 
         {(form.formState.isSubmitted && Object.keys(form.formState.errors).length !== 0)
         && <FormError text="Please review the form for errors and make necessary corrections before resubmitting." />}
-        <Button type="submit">Submit</Button>
+        <Button type="submit" onClick={() => {console.log(form.formState.isSubmitted, Object.keys(form.formState.errors))}}>Submit</Button>
       </form>
     </Form>
   );

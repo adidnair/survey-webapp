@@ -44,17 +44,20 @@ export const dbPromise = getDbPromise()
 
 export type formType = {
   languages: {
-      experience: number;
-      recommendation: number;
-      id: number;
+      id: number,
+      proficiency: number,
+      recommendation: number,
+      purpose: string,
   }[],
-  email: string;
-  age: number;
-  sex: string;
-  skill: string;
+  email: string,
+  age: number,
+  sex: string,
+  skill: string,
+  // occupation: string,
   webFrameworks: {
-      id: number;
-      experience: number;
-      recommendation: number;
-  }[];
+      id: number,
+      proficiency: number,
+      recommendation: number,
+      purpose: string,
+  }[]
 }

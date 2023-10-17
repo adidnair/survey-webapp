@@ -16,6 +16,7 @@ import { Button } from "../ui/button";
 import { Slider } from "../ui/slider";
 import { FormError } from "../myui/form-error";
 import { formType } from "../form-data";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 const LanguageError = ({errObject, index, className} : {errObject: FieldErrors, index: number, className?: string}) => {
   if (errObject) {
@@ -24,11 +25,14 @@ const LanguageError = ({errObject, index, className} : {errObject: FieldErrors, 
       const errArray = errObject.languages as any[]
       if (errArray[index]) {
         const err = errArray[index]
-        if (err.experience) {
-          return <FormError text={err.experience.message} className={className} />
+        if (err.proficiency) {
+          return <FormError text={err.proficiency.message} className={className} />
         }
         if (err.recommendation) {
           return <FormError text={err.recommendation.message} className={className} />
+        }
+        if (err.purpose) {
+          return <FormError text={err.purpose.message} className={className} />
         }
       }
     }
@@ -36,29 +40,17 @@ const LanguageError = ({errObject, index, className} : {errObject: FieldErrors, 
   return null
 }
 
-export const LanguagesHeader = () => {
-  return (
-    <div className="hidden lg:flex flex-row justify-between items-center gap-4 w-full h-14">
-      <Label className="w-[214px] text-muted-foreground shrink-0">
-        Language
-      </Label>
-      <Separator orientation="vertical" className="h-10" />
-      <div className="grow max-w-[322px]">
-        <Label className="text-muted-foreground shrink-0">
-          Describe your proficiency in the language
-        </Label>
-      </div>
-      <Separator orientation="vertical" className="h-10" />
-      <div className="grow max-w-[322px]">
-        <Label className="text-muted-foreground shrink-0">
-        How likely are you to recommend the language?
-        </Label>
-      </div>
-      <div className="w-[1px] h-full"></div>
-      <div className="w-8 h-full"></div>
-    </div>
-  )
-}
+const purposes = [
+  "Did not learn",
+  "Work",
+  "Coursework",
+  "Hobby",
+  "To solve a specific problem",
+  "To contribute to open source software",
+  "To stay ahead of the curve",
+  "For personal enrichment",
+  "Other (please specify)"
+]
 
 export const Languages = ({languages, form, field} : {
   languages: {ids: number[], names: string[]},
@@ -66,15 +58,26 @@ export const Languages = ({languages, form, field} : {
   field: ControllerRenderProps<formType, "languages">
   }) => {
   return (
-    <div className="lg:flex lg:flex-col gap-4">
+    <div className="flex flex-col gap-4">
       {field.value.map((selected_language, selected_lang_index) => {
         return (
-
-          <>
+          <div key={selected_lang_index} className="p-4 rounded-lg border border-border relative">
+            <X
+              width={60}
+              className="text-muted-foreground absolute top-4 right-0
+              hover:text-primary hover:cursor-pointer"
+              onClick={() =>
+                form.setValue(field.name,
+                  field.value.filter((l) => {
+                    return l.id !== selected_language.id;
+                  })
+                )
+              }
+            />
           {form.formState.isSubmitted && <LanguageError errObject={form.formState.errors} index={selected_lang_index}
-          className="lg:hidden"/>}
+          className="xl:hidden"/>}
           <div
-            className="flex flex-col gap-8 lg:flex-row lg:justify-between lg:w-full pt-2 lg:gap-12 max-lg:mb-8"
+            className="flex flex-col gap-8 xl:flex-row xl:justify-between xl:w-full xl:pt-2 xl:gap-12"
             key={selected_language.id}
           >
             <div className="flex flex-row gap-8">
@@ -113,8 +116,9 @@ export const Languages = ({languages, form, field} : {
                                 if (li === selected_lang_index)
                                   return {
                                     id: language_id,
-                                    experience: l.experience,
+                                    proficiency: l.proficiency,
                                     recommendation: l.recommendation,
+                                    purpose: l.purpose,
                                   };
                                 return l;
                               })
@@ -137,111 +141,128 @@ export const Languages = ({languages, form, field} : {
                 </Command>
               </PopoverContent>
             </Popover>
-            <div className="flex items-center lg:hidden">
-              <X
-                width={60}
-                className="text-muted-foreground
-                hover:text-primary hover:cursor-pointer"
-                onClick={() =>
-                  form.setValue(field.name,
-                    field.value.filter((l) => {
-                      return l.id !== selected_language.id;
-                    })
-                  )
-                }
-              />
-            </div>
             </div>
 
-            <Label className="text-muted-foreground lg:hidden">
-              Describe your proficiency in the language
-            </Label>
-            <div className="flex flex-col items-center lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
-              <div className="flex flex-row w-[105%] justify-between">
-              <p className="text-xs whitespace-pre-wrap">Beginner</p>
-              <p className="text-xs whitespace-pre-wrap">Intermediate</p>
-              <p className="text-xs whitespace-pre-wrap">  Expert</p>
+            <div className="flex flex-col gap-12 xl:grow xl:gap-8">
+              <div className="flex flex-col gap-12 lg:flex-row lg:justify-start lg:px-6 lg:grow lg:gap-16 xl:gap-24">
+                <div className="flex flex-col xl:grow xl:max-w-[300px] max-xl:pl-4 max-xl:w-80">
+                  <Label className="text-sm text-muted-foreground">How good are you at using the language?</Label>
+                  <div className="flex flex-col items-center">
+                    <div className="flex flex-row w-[105%] justify-between pt-4">
+                      <p className="text-xs whitespace-pre-wrap">Beginner</p>
+                      <p className="text-xs whitespace-pre-wrap">Intermediate</p>
+                      <p className="text-xs whitespace-pre-wrap">  Expert</p>
+                    </div>
+                    <div className="flex flex-row w-[94%] justify-between mb-[3px]">
+                      <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                      <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                      <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                    </div>
+                    <Slider
+                      name="experience"
+                      min={0}
+                      max={100}
+                      step={1}
+                      defaultValue={[50]}
+                      onValueCommit={(val) => {
+                        form.setValue(field.name,
+                          field.value.map((l, li) => {
+                            if (li === selected_lang_index)
+                              return {
+                                id: l.id,
+                                proficiency: val[0],
+                                recommendation: l.recommendation,
+                                purpose: l.purpose,
+                              };
+                            return l;
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col touch-none xl:grow xl:max-w-[300px] max-xl:pl-4 max-xl:w-80">
+                  <Label className="text-sm text-muted-foreground">How much do you like using the language?</Label>
+                  <div className="flex flex-col items-center">
+                    <div className="flex flex-row w-[105%] justify-between pt-4">
+                    <p className="text-xs whitespace-pre-wrap">Hate It</p>
+                    <p className="text-xs whitespace-pre-wrap">Indifferent</p>
+                    <p className="text-xs whitespace-pre-wrap">Love It</p>
+                    </div>
+                    <div className="flex flex-row w-[94%] justify-between mb-[3px]">
+                      <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                      <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                      <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+                    </div>
+                    <Slider
+                      name="recommendation"
+                      min={0}
+                      max={100}
+                      step={1}
+                      defaultValue={[50]}
+                      onValueCommit={(val) => {
+                        form.setValue(field.name,
+                          field.value.map((l, li) => {
+                            if (li === selected_lang_index)
+                              return {
+                                id: l.id,
+                                proficiency: l.proficiency,
+                                recommendation: val[0],
+                                purpose: l.purpose,
+                              };
+                            return l;
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-row w-[94%] justify-between mb-[3px]">
-                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
-                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
-                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
+
+              <div className="flex flex-col gap-10 xl:flex-row xl:grow xl:gap-4">
+                <div className="flex flex-col gap-4 xl:pl-6">
+                  <Label className="text-sm text-muted-foreground pl-4 xl:pl-0">Why did you learn this language?</Label>
+                  <div className="w-96 pl-2 xl:pl-0">
+                    <Select onValueChange={(value) => {
+                      const new_purpose = value;
+                      if (value === "Other (please specify)") {
+                        // TODO: Add dialog
+                      }
+                      form.setValue(field.name, field.value.map((l, li) => {
+                          if (li === selected_lang_index) {
+                            return {
+                              id: l.id,
+                              proficiency: l.proficiency,
+                              recommendation: l.recommendation,
+                              purpose: new_purpose,
+                            }
+                          }
+                          return l;
+                        })
+                      )
+                    }}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select reason"/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {purposes.map((purpose, i) => {
+                          return (
+                            <SelectItem key={i} value={purpose}>{purpose}</SelectItem>
+                          )
+                          })}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
               </div>
-              <Slider
-                name="experience"
-                min={0}
-                max={100}
-                step={1}
-                defaultValue={[50]}
-                onValueCommit={(val) => {
-                  form.setValue(field.name,
-                    field.value.map((l, li) => {
-                      if (li === selected_lang_index)
-                        return {
-                          id: l.id,
-                          experience: val[0],
-                          recommendation: l.recommendation,
-                        };
-                      return l;
-                    })
-                  );
-                }}
-              />
             </div>
 
-            <Label className="text-muted-foreground lg:hidden">
-              How likely are you to recommend the language?
-            </Label>
-            <div className="flex flex-col items-center touch-none lg:grow lg:max-w-[300px] max-lg:pl-4 max-lg:w-80">
-              <div className="flex flex-row w-[105%] justify-between">
-              <p className="text-xs whitespace-pre-wrap">Never       </p>
-              <p className="text-xs whitespace-pre-wrap">Maybe</p>
-              <p className="text-xs whitespace-pre-wrap">Absolutely</p>
-              </div>
-              <div className="flex flex-row w-[94%] justify-between mb-[3px]">
-                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
-                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
-                <Separator orientation="vertical" className="h-1 w-[1px] bg-primary" />
-              </div>
-              <Slider
-                name="recommendation"
-                min={0}
-                max={100}
-                step={1}
-                defaultValue={[50]}
-                onValueCommit={(val) => {
-                  form.setValue(field.name,
-                    field.value.map((l, li) => {
-                      if (li === selected_lang_index)
-                        return {
-                          id: l.id,
-                          experience: l.experience,
-                          recommendation: val[0],
-                        };
-                      return l;
-                    })
-                  );
-                }}
-              />
-            </div>
-
-            <div className="flex items-center">
-              <X
-                className="max-lg:hidden shrink-0 text-muted-foreground
-                hover:text-primary hover:cursor-pointer"
-                onClick={() =>
-                  form.setValue(field.name,
-                    field.value.filter((l) => {
-                      return l.id !== selected_language.id;
-                    })
-                  )
-                }
-              />
-            </div>
+            <div className="flex items-center w-5 max-xl:hidden"></div>
           </div>
           {form.formState.isSubmitted && <LanguageError errObject={form.formState.errors} index={selected_lang_index}
-          className="max-lg:hidden"/>}
-          </>
+          className="max-xl:hidden"/>}
+          </div>
         );
       })}
 
@@ -277,8 +298,9 @@ export const Languages = ({languages, form, field} : {
                         ...field.value,
                         {
                           id: language_id,
-                          experience: -1,
+                          proficiency: -1,
                           recommendation: -1,
+                          purpose: "",
                         },
                       ]);
                     }}

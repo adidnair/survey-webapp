@@ -21,7 +21,7 @@ const SurveyErrorHappened = () => {
 export default function SurveyPage() {
   return (
     <main className="flex min-h-screen flex-col">
-      <div className="flex bg-background sticky top-0 border-b border-border w-screen h-16 items-center">
+      <div className="flex bg-background sticky top-0 border-b border-border w-screen h-16 items-center z-50">
         <div className="flex-1"></div>
         <div className="flex w-full justify-center text-xl">Survey</div>
         <div className="flex-1"></div>
