@@ -116,9 +116,9 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                                 if (li === selected_framework_index)
                                   return {
                                     id: webFramework_id,
-                                    experience: l.experience,
-                                    recommendation:
-                                      l.recommendation,
+                                    proficiency: l.proficiency,
+                                    recommendation: l.recommendation,
+                                    purpose: l.purpose,
                                   };
                                 return l;
                               })
@@ -183,8 +183,9 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                       if (li === selected_framework_index)
                         return {
                           id: l.id,
-                          experience: val[0],
+                          proficiency: val[0],
                           recommendation: l.recommendation,
+                          purpose: l.purpose,
                         };
                       return l;
                     })
@@ -219,8 +220,9 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                       if (li === selected_framework_index)
                         return {
                           id: l.id,
-                          experience: l.experience,
+                          proficiency: l.proficiency,
                           recommendation: val[0],
+                          purpose: l.purpose,
                         };
                       return l;
                     })
@@ -281,8 +283,9 @@ export const WebFrameworks = ({webFrameworks, form, field} : {
                         ...field.value,
                         {
                           id: webFramework_id,
-                          experience: -1,
+                          proficiency: -1,
                           recommendation: -1,
+                          purpose: "",
                         },
                       ]);
                     }}
