@@ -43,13 +43,13 @@ const SurveyForm = () => {
       .number({ invalid_type_error: "Please enter a number." })
       .int()
       .min(1, {
-        message: "Please enter your actual age.",
+        message: "Please enter your age.",
       })
       .max(116, {
         message:
           "The oldest person in the world is 116. Please enter your actual age.",
       }),
-    sex: z.string(),
+    gender: z.string().min(1, {message: "Please specify your gender"}),
     skill: z.enum(skill_levels.map((val) => val[0]) as [string, ...string[]]),
     // occupation: z.string(),
     languages: z
@@ -84,6 +84,7 @@ const SurveyForm = () => {
     defaultValues: {
       email: "",
       age: undefined,
+      gender: "",
       languages: [],
       webTechnologies: [],
       databases: [],
@@ -97,6 +98,7 @@ const SurveyForm = () => {
     // ✅ This will be type-safe and validated.
     // database push
     toast({title: "Success!"})
+    console.log(values.gender)
     // pushToDB(values)
     // push user with user data
     // push responses with foreign key of user
@@ -149,10 +151,10 @@ const SurveyForm = () => {
 
         <FormField
           control={form.control}
-          name="sex"
+          name="gender"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Sex</FormLabel>
+              <FormLabel>Gender</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
@@ -177,17 +179,17 @@ const SurveyForm = () => {
                   </FormItem>
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
-                      <RadioGroupItem value="" className="peer"/>
+                      <RadioGroupItem value="Specify" className="peer"/>
                     </FormControl>
                     <FormLabel className="font-normal cursor-pointer">
                       Other
                     </FormLabel>
-                    <Input className="absolute translate-x-20 w-32 h-8 peer-data-[state=unchecked]:hidden"
+                    <Input className="absolute translate-x-20 w-max h-8 peer-data-[state=unchecked]:hidden"
                     placeholder="Specify" {...field}/>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
-              <FormDescription>Please specify your sex</FormDescription>
+              <FormDescription>Please specify your gender</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -288,7 +290,7 @@ const SurveyForm = () => {
 
         {(form.formState.isSubmitted && Object.keys(form.formState.errors).length !== 0)
         && <FormError text="Please review the form for errors and make necessary corrections before resubmitting." />}
-        <Button type="submit" onClick={() => {console.log(form.formState.isSubmitted, Object.keys(form.formState.errors))}}>Submit</Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   );

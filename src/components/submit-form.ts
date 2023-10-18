@@ -7,7 +7,7 @@ const pushToDB = async (values: formType) => {
     const push = db.insert(people).values({
       generatedId: "aaa",
       email: values.email,
-      sex: values.sex,
+      sex: values.gender,
       skill: values.skill
     }).run()
     return "haha"

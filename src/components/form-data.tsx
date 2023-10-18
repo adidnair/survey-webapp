@@ -27,7 +27,7 @@ const getDbPromise = async () => {
   for (const webf of webtechs) {
     webtech_names[webf.id] = webf.name
   }
-  let db_names: string[] = Array(largest_webtech+1)
+  let db_names: string[] = Array(largest_database+1)
   for (const db of databases) {
     db_names[db.id] = db.name
   }
@@ -58,7 +58,7 @@ export const dbPromise = getDbPromise()
 export type formType = {
   email: string,
   age: number,
-  sex: string,
+  gender: string,
   skill: string,
   // occupation: string,
   languages: {
