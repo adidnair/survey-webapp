@@ -25,8 +25,9 @@ import { FormError } from "./myui/form-error";
 import { use } from "react";
 import { useFormChoicesPromise } from "./form-provider";
 import { skill_levels } from "./questions/skill";
-import { WebFrameworks, WebFrameworksHeader } from "./questions/web-frameworks";
+import { WebTechnologies } from "./questions/web-technologies";
 import { pushToDB } from "./submit-form";
+import { Databases } from "./questions/databases";
 
 const SurveyForm = () => {
   const formData = use(useFormChoicesPromise())
@@ -53,16 +54,24 @@ const SurveyForm = () => {
     // occupation: z.string(),
     languages: z
       .object({
-        id: z.number().int().min(-1).max(formData.languages.names.length-1),
-        proficiency: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
+        id: z.number().int().min(1),
+        proficiency: z.number().int().min(0, {message: "Please enter your proficiency"}).max(100),
         recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
         purpose: z.string().min(1, {message: "Please select a reason"}),
       })
       .array(),
-    webFrameworks: z
+    webTechnologies: z
       .object({
-        id: z.number().int().min(-1).max(formData.webFrameworks.names.length-1),
-        proficiency: z.number().int().min(0, {message: "Please rate your experience"}).max(100),
+        id: z.number().int().min(1),
+        proficiency: z.number().int().min(0, {message: "Please enter your proficiency"}).max(100),
+        recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
+        purpose: z.string().min(1, {message: "Please select a reason"}),
+      })
+      .array(),
+    databases: z
+      .object({
+        id: z.number().int().min(1),
+        proficiency: z.number().int().min(0, {message: "Please enter your proficiency"}).max(100),
         recommendation: z.number().int().min(0, {message: "Please enter your recommendation"}).max(100),
         purpose: z.string().min(1, {message: "Please select a reason"}),
       })
@@ -76,7 +85,8 @@ const SurveyForm = () => {
       email: "",
       age: undefined,
       languages: [],
-      webFrameworks: [],
+      webTechnologies: [],
+      databases: [],
     },
   });
 
@@ -211,7 +221,7 @@ const SurveyForm = () => {
                 })}
                 </RadioGroup>
               </FormControl>
-              <FormDescription>Select which skill level describes you best</FormDescription>
+              <FormDescription>Please select which skill level describes you best</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -230,7 +240,7 @@ const SurveyForm = () => {
                <Languages languages={formData.languages} form={form} field={field} />
               </FormControl>
               <FormDescription>
-                Select all the languages you know about.
+                Please select all the languages you know about.
               </FormDescription>
             </FormItem>
           )}}
@@ -240,17 +250,35 @@ const SurveyForm = () => {
 
         <FormField
           control={form.control}
-          name="webFrameworks"
+          name="webTechnologies"
           render={({ field }) => {
             return (
             <FormItem className="flex flex-col">
-              <FormLabel className="mb-1">Web Frameworks/Libraries</FormLabel>
-              {(field.value.length > 0) && <WebFrameworksHeader />}
+              <FormLabel className="mb-1">Web Technologies</FormLabel>
               <FormControl>
-               <WebFrameworks webFrameworks={formData.webFrameworks} form={form} field={field} />
+               <WebTechnologies webTechnologies={formData.webTechnologies} form={form} field={field} />
               </FormControl>
               <FormDescription>
-                Select all the web frameworks, libraries or other technologies you know about.
+                Please select all the web frameworks, libraries or other technologies you know about.
+              </FormDescription>
+            </FormItem>
+          )}}
+        />
+
+        <Separator />
+
+        <FormField
+          control={form.control}
+          name="databases"
+          render={({ field }) => {
+            return (
+            <FormItem className="flex flex-col">
+              <FormLabel className="mb-1">Database Technologies</FormLabel>
+              <FormControl>
+               <Databases databases={formData.databases} form={form} field={field} />
+              </FormControl>
+              <FormDescription>
+                Please select all the database technologies you know about.
               </FormDescription>
             </FormItem>
           )}}

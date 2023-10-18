@@ -7,13 +7,13 @@ export const libsqlWasmFuncTable = sqliteTable("libsql_wasm_func_table", {
 	body: text("body"),
 });
 
-export const languages = sqliteTable("languages", {
-	id: integer("id").primaryKey(),
+export const languageChoices = sqliteTable("language_choices", {
+	id: integer("id").primaryKey().notNull(),
 	name: text("name").notNull(),
 });
 
-export const webFrameworks = sqliteTable("web_frameworks", {
-	id: integer("id").primaryKey(),
+export const webTechChoices = sqliteTable("web_tech_choices", {
+	id: integer("id").primaryKey().notNull(),
 	name: text("name").notNull(),
 });
 
@@ -23,4 +23,9 @@ export const people = sqliteTable("people", {
 	email: text("email"),
 	sex: text("sex").notNull(),
 	skill: text("skill").notNull(),
+});
+
+export const databaseChoices = sqliteTable("database_choices", {
+	id: integer("id").primaryKey().notNull(),
+	name: text("name").notNull(),
 });
