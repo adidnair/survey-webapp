@@ -41,15 +41,15 @@ const LanguageError = ({errObject, index, className} : {errObject: FieldErrors, 
 }
 
 const purposes = [
-  "Did not learn",
-  "Work",
-  "Coursework",
-  "Hobby",
-  "To solve a specific problem",
-  "To contribute to open source software",
-  "To stay ahead of the curve",
-  "For personal enrichment",
-  "Other (please specify)"
+  "did not learn",
+  "work",
+  "coursework",
+  "hobby",
+  "to solve a specific problem",
+  "to contribute to open source software",
+  "to stay ahead of the curve",
+  "for personal enrichment",
+  "other (please specify)"
 ]
 
 export const Languages = ({languages, form, field} : {
@@ -248,7 +248,7 @@ export const Languages = ({languages, form, field} : {
                       <SelectContent>
                         {purposes.map((purpose, i) => {
                           return (
-                            <SelectItem key={i} value={purpose}>{purpose}</SelectItem>
+                            <SelectItem key={i} value={purpose}>{purpose.charAt(0).toUpperCase() + purpose.slice(1)}</SelectItem>
                           )
                           })}
                       </SelectContent>

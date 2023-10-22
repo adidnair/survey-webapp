@@ -15,6 +15,13 @@
       "when": 1697059697721,
       "tag": "0001_flawless_ares",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1697930312825,
+      "tag": "0002_purple_greymalkin",
+      "breakpoints": true
     }
   ]
 }
