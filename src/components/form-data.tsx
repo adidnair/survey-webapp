@@ -56,7 +56,7 @@ const getDbPromise = async () => {
 export const dbPromise = getDbPromise()
 
 export type formType = {
-  email: string,
+  email: string | null,
   age: number,
   gender: string,
   skill: string,

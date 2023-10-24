@@ -17,10 +17,9 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Languages } from "./questions/languages";
 import { Separator } from "./ui/separator";
-import { toast } from "./ui/use-toast";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { FormError } from "./myui/form-error";
-import { use, useRef, useState } from "react";
+import { use, useState } from "react";
 import { useFormChoicesPromise } from "./form-provider";
 import { skill_levels } from "./questions/skill";
 import { WebTechnologies } from "./questions/web-technologies";
@@ -28,7 +27,6 @@ import { checkIfFilled, pushToDB } from "./submit-form";
 import { Databases } from "./questions/databases";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -37,6 +35,7 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { useRouter } from "next/navigation";
+import { AlertCircle, CheckCircle, Ticket, X } from "lucide-react";
 
 const SurveyForm = () => {
   const formData = use(useFormChoicesPromise());
@@ -47,7 +46,7 @@ const SurveyForm = () => {
       .email({
         message: "Please enter a valid email",
       })
-      .or(z.string().length(0)),
+      .or(z.string().length(0)).nullable(),
     age: z.coerce
       .number({ invalid_type_error: "Please enter a number." })
       .int()
@@ -138,8 +137,8 @@ const SurveyForm = () => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     let gen_id: string | -1 = -1
-    setOpenModal(true);
     setModalState("submitting")
+    setOpenModal(true);
     if (values.email !== "") {
       const alreadyFilled = await checkIfFilled(values.email);
       if (alreadyFilled === null) {
@@ -161,7 +160,7 @@ const SurveyForm = () => {
       setModalState("error")
     } else {
       setModalState("success")
-      await new Promise((res) => {setTimeout(res, 3000)})
+      await new Promise((res) => {setTimeout(res, 2000)})
       router.push('/completed')
       return
     }
@@ -171,9 +170,9 @@ const SurveyForm = () => {
   return (
     <>
       <AlertDialog open={openModal} onOpenChange={setOpenModal}>
-        <AlertDialogContent >
-          <AlertDialogHeader>
-            {modalState === "confirm rewrite" && (
+        <AlertDialogContent className="flex flex-col justify-between h-1/3">
+          {modalState === "confirm rewrite" && (
+            <AlertDialogHeader>
               <>
               <AlertDialogTitle>
                 We already have a submission with this email
@@ -183,13 +182,19 @@ const SurveyForm = () => {
                 current one.
               </AlertDialogDescription>
               </>
-            )}
-          </AlertDialogHeader>
-          <div>
+            </AlertDialogHeader>
+          )}
+          <div className="flex h-full items-center justify-center">
             {(modalState === "submitting")
               ? "Submitting..." : (modalState === "success")
-                ? "Success!" : (modalState === "error")
-                  ? "Something went wrong :/" : ""}
+                ? <div className="flex flex-col items-center gap-6">
+                    <CheckCircle color="#65A30D" size={100}/>
+                    <p>Successfully submitted!</p>
+                  </div> : (modalState === "error")
+                  ? <div className="flex flex-col items-center gap-6">
+                      <AlertCircle color="red" size={100}/>
+                      <p className="text-center">Something went wrong :/<br />Try to submit again</p>
+                    </div> : ""}
           </div>
           {(modalState === "confirm rewrite") &&
             <AlertDialogFooter>
@@ -209,7 +214,18 @@ const SurveyForm = () => {
             >
             {"Yes I'm sure"}
             </Button>
-              </AlertDialogFooter>
+            </AlertDialogFooter>
+          }
+          {(modalState === "error") &&
+            <AlertDialogFooter>
+              <AlertDialogCancel
+              onClick={() => {
+                if (promiseResolver) {
+                  promiseResolver(false)
+                }
+              }}
+            >Cancel</AlertDialogCancel>
+            </AlertDialogFooter>
           }
         </AlertDialogContent>
       </AlertDialog>
