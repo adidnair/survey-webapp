@@ -30,12 +30,13 @@ import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./ui/alert-dialog";
-import { AlertDialogContent } from "@radix-ui/react-alert-dialog";
+import { useRouter } from "next/navigation";
 
 const SurveyForm = () => {
   const formData = use(useFormChoicesPromise());
@@ -122,50 +123,94 @@ const SurveyForm = () => {
     },
   });
 
-  const rewrite = useRef(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [modalState, setModalState] = useState<
+    "empty" | "submitting" | "confirm rewrite" | "success" | "error"
+  >("empty");
+  const [promiseResolver, setPromiseResolver] = useState<((rewrite: boolean) => void) | null>(null)
+  const router = useRouter()
 
-  const [openModal, setOpenModal] = useState(false);
-  // 2. Define a submit handler.
+  const createPromise = () => {
+    return new Promise<boolean>((resolve) => {
+      setPromiseResolver(() => resolve);
+    });
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    let gen_id: string | -1 = -1
+    setOpenModal(true);
+    setModalState("submitting")
     if (values.email !== "") {
       const alreadyFilled = await checkIfFilled(values.email);
       if (alreadyFilled === null) {
-        await pushToDB(values, null);
-      } else if (alreadyFilled === -1) {
-        throw Error("More than one entry found");
-      } else {
-        // ask do you want to delete?
-        setOpenModal(true);
+        gen_id = await pushToDB(values, null);
+      } else if (alreadyFilled !== -1) {
+        setModalState("confirm rewrite")
+        const rewrite = await createPromise()
         if (rewrite) {
-          await pushToDB(values, alreadyFilled);
+          setModalState("submitting")
+          gen_id = await pushToDB(values, alreadyFilled);
+        } else {
+          return
         }
       }
+    } else {
+      gen_id = await pushToDB(values, null)
     }
+    if (gen_id === -1) {
+      setModalState("error")
+    } else {
+      setModalState("success")
+      await new Promise((res) => {setTimeout(res, 3000)})
+      router.push('/completed')
+      return
+    }
+    setModalState("empty")
   }
 
   return (
     <>
       <AlertDialog open={openModal} onOpenChange={setOpenModal}>
-        <AlertDialogContent>
+        <AlertDialogContent >
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              We already have a submission with this email
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              If you continue, the previous submission will be replaced with the
-              current one.
-            </AlertDialogDescription>
+            {modalState === "confirm rewrite" && (
+              <>
+              <AlertDialogTitle>
+                We already have a submission with this email
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                If you continue, the previous submission will be replaced with the
+                current one.
+              </AlertDialogDescription>
+              </>
+            )}
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
+          <div>
+            {(modalState === "submitting")
+              ? "Submitting..." : (modalState === "success")
+                ? "Success!" : (modalState === "error")
+                  ? "Something went wrong :/" : ""}
+          </div>
+          {(modalState === "confirm rewrite") &&
+            <AlertDialogFooter>
+              <AlertDialogCancel
               onClick={() => {
-                rewrite.current = true;
+                if (promiseResolver) {
+                  promiseResolver(false)
+                }
+              }}
+            >Cancel</AlertDialogCancel>
+              <Button
+              onClick={() => {
+                if (promiseResolver) {
+                  promiseResolver(true)
+                }
               }}
             >
-              {"Yes I'm sure"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
+            {"Yes I'm sure"}
+            </Button>
+              </AlertDialogFooter>
+          }
         </AlertDialogContent>
       </AlertDialog>
 

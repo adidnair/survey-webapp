@@ -26,8 +26,9 @@ export const checkIfFilled = async (email: string) => {
         );
         return -1;
     }
-  } catch {
+  } catch (error) {
     console.log("Error: error occurred while checking db");
+    console.log(error)
     return -1;
   }
 };
@@ -48,17 +49,20 @@ export const pushToDB = async (values: formType, id: number | null) => {
         skill: values.skill,
       });
 
-      await db.insert(languageResponses).values(
-        values.languages.map((entry) => {
-          return {
-            personId: id,
-            languageId: entry.id,
-            proficiency: entry.proficiency,
-            likeability: entry.recommendation,
-            purpose: entry.purpose,
-          };
-        }),
-      );
+      if (values.languages.length !== 0) {
+        await db.insert(languageResponses).values(
+          values.languages.map((entry) => {
+            return {
+              personId: id,
+              languageId: entry.id,
+              proficiency: entry.proficiency,
+              likeability: entry.recommendation,
+              purpose: entry.purpose,
+            };
+          }),
+        );
+      }
+
       return prev_data[0].generatedId;
     } else {
       let gen_id = randomUUID().toString();
@@ -93,22 +97,26 @@ export const pushToDB = async (values: formType, id: number | null) => {
         })
         .returning();
 
-      await db.insert(languageResponses).values(
-        values.languages.map((entry) => {
-          return {
-            personId: new_row[0].id,
-            languageId: entry.id,
-            proficiency: entry.proficiency,
-            likeability: entry.recommendation,
-            purpose: entry.purpose,
-          };
-        }),
-      );
+        if (values.languages.length !== 0) {
+          await db.insert(languageResponses).values(
+            values.languages.map((entry) => {
+              return {
+                personId: new_row[0].id,
+                languageId: entry.id,
+                proficiency: entry.proficiency,
+                likeability: entry.recommendation,
+                purpose: entry.purpose,
+              };
+            }),
+          );
+        }
 
       return gen_id;
     }
-  } catch {
+  } catch (error) {
     console.log("Error: error occurred while pushing form data");
+    console.log(values)
+    console.log(error)
     return -1;
   }
 };
