@@ -35,9 +35,6 @@ export const checkIfFilled = async (email: string) => {
 
 export const pushToDB = async (values: formType, id: number | null) => {
   try {
-    if (values.email === "") {
-      values.email = null
-    }
     if (id !== null) {
       const prev_data = await db
         .delete(people)
