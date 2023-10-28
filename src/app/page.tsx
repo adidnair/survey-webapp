@@ -9,7 +9,7 @@ export default function LandingPage() {
       <ToggleTheme />
     </div>
     <div className="text-3xl text-center w-[90%] lg:text-6xl font-bold">Computer Science Trends Survey</div>
-    <div className="text-center w-[80%] lg:w-1/2">This is a survey we are conducting as part of our survey lab.<br />We are collecting this data to analyze trends and patterns in the current computere science environment.<br />Any data we collect will be strictly used for this purpose only and will not be shared to anyone else or be used by us for any other purpose</div>
+    <div className="text-center w-[80%] lg:w-1/2">This is a survey we are conducting as part of our survey lab.<br />We are collecting this data to analyze trends and patterns in the current computer science environment.<br />Any data we collect will be strictly used for this purpose only and will not be shared to anyone else or be used by us for any other purpose</div>
     <Link href="/new_survey" className="text-3xl">
       <Button >Go to survey</Button>
     </Link>

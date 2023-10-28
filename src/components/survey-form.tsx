@@ -35,7 +35,7 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { useRouter } from "next/navigation";
-import { AlertCircle, CheckCircle, Ticket, X } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 
 const SurveyForm = () => {
   const formData = use(useFormChoicesPromise());
@@ -46,7 +46,7 @@ const SurveyForm = () => {
       .email({
         message: "Please enter a valid email",
       })
-      .or(z.string().length(0)).nullable(),
+      .or(z.string().length(0)),
     age: z.coerce
       .number({ invalid_type_error: "Please enter a number." })
       .int()
@@ -161,7 +161,7 @@ const SurveyForm = () => {
     } else {
       setModalState("success")
       await new Promise((res) => {setTimeout(res, 2000)})
-      router.push('/completed')
+      router.push(`/completed/${gen_id}`)
       return
     }
     setModalState("empty")
