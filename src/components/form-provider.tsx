@@ -1,9 +1,9 @@
 "use client"
 
 import { createContext, useContext } from "react"
-import type { dbPromise } from "./form-data";
+import { getDbPromise } from "./form-data";
 
-const FormContext = createContext<typeof dbPromise | null>(null);
+const FormContext = createContext<ReturnType<typeof getDbPromise> | null>(null);
 
 export const useFormChoicesPromise = () => {
   const data = useContext(FormContext)
@@ -16,7 +16,7 @@ const FormChoicesProvider = ({
   formPromise,
 }: {
   children: React.ReactNode,
-  formPromise: typeof dbPromise,
+  formPromise: ReturnType<typeof getDbPromise>,
 }) => {
   return (
     <FormContext.Provider value={formPromise}>{children}</FormContext.Provider>

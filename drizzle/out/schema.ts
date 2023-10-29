@@ -20,7 +20,7 @@ export const webTechChoices = sqliteTable("web_tech_choices", {
 export const people = sqliteTable("people", {
 	id: integer("id").primaryKey().notNull(),
 	generatedId: text("generated_id").notNull(),
-	email: text("email"),
+	email: text("email").notNull(),
 	gender: text("gender").notNull(),
 	skill: text("skill").notNull(),
 },

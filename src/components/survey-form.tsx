@@ -38,7 +38,10 @@ import { useRouter } from "next/navigation";
 import { AlertCircle, CheckCircle } from "lucide-react";
 
 const SurveyForm = () => {
-  const formData = use(useFormChoicesPromise());
+  const formDataPromiseResult = use(useFormChoicesPromise());
+  if (formDataPromiseResult === -1) {
+    throw Error("error fetching from database")
+  }
 
   const formSchema = z.object({
     email: z
@@ -110,9 +113,29 @@ const SurveyForm = () => {
       .array(),
   });
 
+  const formData = formDataPromiseResult.options
+  const prevFilledData = formDataPromiseResult.prevFilledData
+
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [modalState, setModalState] = useState<
+    "empty" | "submitting" | "confirm rewrite" | "success" | "error"
+  >("empty");
+  const [promiseResolver, setPromiseResolver] = useState<((rewrite: boolean) => void) | null>(null)
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: (prevFilledData !== null && prevFilledData !== 0 && prevFilledData !== -1)
+    ? {
+      email: prevFilledData.email,
+      age: prevFilledData.age,
+      gender: prevFilledData.gender,
+      skill: prevFilledData.skill,
+      languages: prevFilledData.languages,
+      webTechnologies: prevFilledData.webTechnologies,
+      databases: prevFilledData.databases,
+    }
+    : {
       email: "",
       age: undefined,
       gender: "",
@@ -122,18 +145,21 @@ const SurveyForm = () => {
     },
   });
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [modalState, setModalState] = useState<
-    "empty" | "submitting" | "confirm rewrite" | "success" | "error"
-  >("empty");
-  const [promiseResolver, setPromiseResolver] = useState<((rewrite: boolean) => void) | null>(null)
-  const router = useRouter()
+  if (prevFilledData === 0) {
+    return (
+      <div className="text-center text-3xl">Cound not find submission for user</div>
+    )
+  }
+  if (prevFilledData === -1) {
+    throw Error("error in fetching submission")
+  }
 
   const createPromise = () => {
     return new Promise<boolean>((resolve) => {
       setPromiseResolver(() => resolve);
     });
   }
+
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     let gen_id: string | -1 = -1

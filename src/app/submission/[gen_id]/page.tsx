@@ -18,7 +18,7 @@ const SurveyErrorHappened = () => {
   )
 }
 
-export default function SurveyPage() {
+export default async function SurveyPage( { params }: { params: {gen_id: string} }) {
   return (
     <main className="flex min-h-screen flex-col">
       <div className="flex bg-background sticky top-0 border-b border-border w-screen h-16 items-center z-50">
@@ -32,8 +32,8 @@ export default function SurveyPage() {
       <div className="mx-8 md:mx-16 lg:mx-32 py-20">
         <ErrorBoundary fallback={<SurveyErrorHappened />}>
           <Suspense fallback=<SurveyFormSkeleton />>
-            <FormChoicesProvider formPromise={getDbPromise(null)}>
-              <SurveyForm prevFilledData={null}/>
+            <FormChoicesProvider formPromise={getDbPromise(params.gen_id)}>
+              <SurveyForm />
             </FormChoicesProvider>
           </Suspense>
         </ErrorBoundary>
