@@ -33,7 +33,7 @@ export default function SurveyPage() {
         <ErrorBoundary fallback={<SurveyErrorHappened />}>
           <Suspense fallback=<SurveyFormSkeleton />>
             <FormChoicesProvider formPromise={getDbPromise(null)}>
-              <SurveyForm prevFilledData={null}/>
+              <SurveyForm />
             </FormChoicesProvider>
           </Suspense>
         </ErrorBoundary>
