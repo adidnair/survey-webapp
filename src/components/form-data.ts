@@ -19,13 +19,17 @@ export type formType = {
       proficiency: number,
       recommendation: number,
       purpose: string,
-  }[]
+  }[],
   databases: {
       id: number,
       proficiency: number,
       recommendation: number,
       purpose: string,
-  }[]
+  }[],
+  newLanguages: {
+    id: number,
+    name: string,
+  }[],
 }
 
 const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => {
@@ -80,7 +84,7 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
 export const getDbPromise = async (prevFilledId: null | string) => {
   try {
     // Get data
-    const langs = await db.select().from(languageChoices).all()
+    const langs = await db.select().from(languageChoices).where(eq(languageChoices.verified, 1))
     const webtechs = await db.select().from(webTechChoices).all()
     const databases = await db.select().from(databaseChoices).all()
 

@@ -111,6 +111,12 @@ const SurveyForm = () => {
         purpose: z.string().min(1, { message: "Please select a reason" }),
       })
       .array(),
+    newLanguages: z
+      .object({
+        id: z.number().int().min(1),
+        name: z.string().min(1),
+      })
+      .array(),
   });
 
   const formData = formDataPromiseResult.options
@@ -134,6 +140,7 @@ const SurveyForm = () => {
       languages: prevFilledData.languages,
       webTechnologies: prevFilledData.webTechnologies,
       databases: prevFilledData.databases,
+      newLanguages: [],
     }
     : {
       email: "",
@@ -142,6 +149,7 @@ const SurveyForm = () => {
       languages: [],
       webTechnologies: [],
       databases: [],
+      newLanguages: [],
     },
   });
 
@@ -186,7 +194,7 @@ const SurveyForm = () => {
       setModalState("error")
     } else {
       setModalState("success")
-      await new Promise((res) => {setTimeout(res, 2000)})
+      await new Promise((res) => {setTimeout(res, 1000)})
       router.push(`/completed/${gen_id}`)
       return
     }

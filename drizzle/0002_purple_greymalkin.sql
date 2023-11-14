@@ -5,7 +5,8 @@ CREATE TABLE `database_choices` (
 --> statement-breakpoint
 CREATE TABLE `language_choices` (
 	`id` integer PRIMARY KEY NOT NULL,
-	`name` text NOT NULL
+	`name` text NOT NULL,
+	`verified` integer DEFAULT 0 NOT NULL 
 );
 --> statement-breakpoint
 CREATE TABLE `people` (

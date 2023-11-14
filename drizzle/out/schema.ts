@@ -10,6 +10,7 @@ export const libsqlWasmFuncTable = sqliteTable("libsql_wasm_func_table", {
 export const languageChoices = sqliteTable("language_choices", {
 	id: integer("id").primaryKey(),
 	name: text("name").notNull(),
+	verified: integer("verified").notNull(),
 });
 
 export const webTechChoices = sqliteTable("web_tech_choices", {
