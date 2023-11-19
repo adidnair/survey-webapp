@@ -162,7 +162,10 @@ export const Languages = ({languages, form, field} : {
                       min={0}
                       max={100}
                       step={1}
-                      defaultValue={[selected_language.proficiency]}
+                      defaultValue={
+                        (selected_language.proficiency === -1) ? [50] :
+                        [selected_language.proficiency]
+                        }
                       onValueCommit={(val) => {
                         form.setValue(field.name,
                           field.value.map((l, li) => {
@@ -199,7 +202,10 @@ export const Languages = ({languages, form, field} : {
                       min={0}
                       max={100}
                       step={1}
-                      defaultValue={[selected_language.recommendation]}
+                      defaultValue={
+                        (selected_language.recommendation === -1) ? [50] :
+                        [selected_language.recommendation]
+                        }
                       onValueCommit={(val) => {
                         form.setValue(field.name,
                           field.value.map((l, li) => {
@@ -225,9 +231,9 @@ export const Languages = ({languages, form, field} : {
                   <div className="px-2 xl:w-96 xl:pl-0 oveflow-hidden">
                     <Select onValueChange={(value) => {
                       const new_purpose = value;
-                      if (value === "Other (please specify)") {
-                        // TODO: Add dialog
-                      }
+                      // if (value === "Other (please specify)") {
+                      //   TODO: Add dialog
+                      // }
                       form.setValue(field.name, field.value.map((l, li) => {
                           if (li === selected_lang_index) {
                             return {
