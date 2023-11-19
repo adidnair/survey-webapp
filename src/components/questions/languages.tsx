@@ -49,7 +49,6 @@ const purposes = [
   "to contribute to open source software",
   "to stay ahead of the curve",
   "for personal enrichment",
-  "other (please specify)"
 ]
 
 export const Languages = ({languages, form, field} : {
@@ -163,7 +162,7 @@ export const Languages = ({languages, form, field} : {
                       min={0}
                       max={100}
                       step={1}
-                      defaultValue={[50]}
+                      defaultValue={[selected_language.proficiency]}
                       onValueCommit={(val) => {
                         form.setValue(field.name,
                           field.value.map((l, li) => {
@@ -200,7 +199,7 @@ export const Languages = ({languages, form, field} : {
                       min={0}
                       max={100}
                       step={1}
-                      defaultValue={[50]}
+                      defaultValue={[selected_language.recommendation]}
                       onValueCommit={(val) => {
                         form.setValue(field.name,
                           field.value.map((l, li) => {
@@ -241,7 +240,7 @@ export const Languages = ({languages, form, field} : {
                           return l;
                         })
                       )
-                    }}>
+                    }} value={selected_language.purpose}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select reason"/>
                       </SelectTrigger>

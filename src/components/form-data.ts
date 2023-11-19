@@ -73,6 +73,7 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
       languages: languages,
       webTechnologies: [],
       databases: [],
+      newLanguages: [],
     }
   } catch (err) {
     console.log("Error: error while retreiving previous form submission")

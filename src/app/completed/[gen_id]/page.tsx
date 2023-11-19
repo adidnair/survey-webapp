@@ -21,8 +21,8 @@ export default function CompletedPage( { params }: { params: {gen_id: string} })
     </div>
 
     {(siteURL === '') ? <div className="bg-muted text-muted px-3 py-1 w-1/3 rounded rounded-l animate-pulse">a</div> :
-      <div className="text-center flex flex-col gap-4">
-      Use this link to edit your submission in case you want to in the future
+      <div className="text-center flex flex-col gap-4 w-full items-center">
+      <p className="w-[80%] lg:w-1/2">Use this link to edit your submission in case you want to in the future</p>
       <div className="flex flex-row gap-4 justify-center items-center">
         <a className="bg-muted text-muted-foreground hover:text-primary px-3 py-1 rounded rounded-l underline" href={`${siteURL}/submission/${params.gen_id}`} target="_blank">{siteURL}/submission/{params.gen_id}</a>
         <Copy className="text-muted hover:text-primary cursor-pointer" onClick={() => {

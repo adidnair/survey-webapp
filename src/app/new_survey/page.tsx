@@ -9,8 +9,9 @@ import { getDbPromise } from "@/components/form-data";
 
 const SurveyErrorHappened = () => {
   return (
-    <div className="flex flex-col gap-6 h-full w-full text-xl items-center justify-center">
-      Something went wrong :/
+    <div className="flex flex-col gap-6 h-full w-full text-xl text-center items-center justify-center">
+      Something went wrong :/<br />
+      Please try reloading the page. If it still persists, press the button below to let us know.
       <Button className="w-32">
         Report
       </Button>
