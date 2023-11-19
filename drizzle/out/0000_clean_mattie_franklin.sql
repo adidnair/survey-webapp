@@ -9,7 +9,7 @@ CREATE TABLE `libsql_wasm_func_table` (
 CREATE TABLE `people` (
 	`id` integer PRIMARY KEY NOT NULL,
 	`generated_id` text NOT NULL,
-	`email` text,
+	`email` text NOT NULL,
 	`gender` text NOT NULL,
 	`skill` text NOT NULL
 );
