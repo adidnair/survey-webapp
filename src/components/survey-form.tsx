@@ -24,7 +24,6 @@ import { useFormChoicesPromise } from "./form-provider";
 import { skill_levels } from "./questions/skill";
 import { WebTechnologies } from "./questions/web-technologies";
 import { checkIfFilled, pushToDB } from "./submit-form";
-import { Databases } from "./questions/databases";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -444,30 +443,6 @@ const SurveyForm = () => {
                   <FormDescription>
                     Please select all the web frameworks, libraries or other
                     technologies you know about.
-                  </FormDescription>
-                </FormItem>
-              );
-            }}
-          />
-
-          <Separator />
-
-          <FormField
-            control={form.control}
-            name="databases"
-            render={({ field }) => {
-              return (
-                <FormItem className="flex flex-col">
-                  <FormLabel className="mb-1">Database Technologies</FormLabel>
-                  <FormControl>
-                    <Databases
-                      databases={formData.databases}
-                      form={form}
-                      field={field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Please select all the database technologies you know about.
                   </FormDescription>
                 </FormItem>
               );

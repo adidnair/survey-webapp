@@ -18,7 +18,7 @@ import { FormError } from "../myui/form-error";
 import { formType } from "../form-data";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
-const WebTechnologyError = ({errObject, index, className} : {errObject: FieldErrors, index: number, className?: string}) => {
+const WebTechError = ({errObject, index, className} : {errObject: FieldErrors, index: number, className?: string}) => {
   if (errObject) {
     if (errObject.webTechnologies) {
       // @ts-ignore
@@ -41,15 +41,14 @@ const WebTechnologyError = ({errObject, index, className} : {errObject: FieldErr
 }
 
 const purposes = [
-  "Did not learn",
-  "Work",
-  "Coursework",
-  "Hobby",
-  "To solve a specific problem",
-  "To contribute to open source software",
-  "To stay ahead of the curve",
-  "For personal enrichment",
-  "Other (please specify)"
+  "did not learn",
+  "work",
+  "coursework",
+  "hobby",
+  "to solve a specific problem",
+  "to contribute to open source software",
+  "to stay ahead of the curve",
+  "for personal enrichment",
 ]
 
 export const WebTechnologies = ({webTechnologies, form, field} : {
@@ -59,9 +58,9 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
   }) => {
   return (
     <div className="flex flex-col gap-4">
-      {field.value.map((selected_webtech, selected_webtech_index) => {
+      {field.value.map((selected_webTechnology, selected_webTech_index) => {
         return (
-          <div key={selected_webtech_index} className="p-4 rounded-lg border border-border relative">
+          <div key={selected_webTech_index} className="p-4 rounded-lg border border-border relative">
             <X
               width={60}
               className="text-muted-foreground absolute top-4 right-0
@@ -69,16 +68,16 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
               onClick={() =>
                 form.setValue(field.name,
                   field.value.filter((wt) => {
-                    return wt.id !== selected_webtech.id;
+                    return wt.id !== selected_webTechnology.id;
                   })
                 )
               }
             />
-          {form.formState.isSubmitted && <WebTechnologyError errObject={form.formState.errors} index={selected_webtech_index}
+          {form.formState.isSubmitted && <WebTechError errObject={form.formState.errors} index={selected_webTech_index}
           className="xl:hidden"/>}
           <div
             className="flex flex-col gap-8 xl:flex-row xl:justify-between xl:w-full xl:pt-2 xl:gap-12"
-            key={selected_webtech.id}
+            key={selected_webTechnology.id}
           >
             <div className="flex flex-row gap-8">
             <Popover>
@@ -88,34 +87,34 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
                   role="combobox"
                   className="w-52 justify-between shrink-0"
                 >
-                  {webTechnologies.names[selected_webtech.id]}
+                  {webTechnologies.names[selected_webTechnology.id]}
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-52 p-0">
                 <Command className="max-h-72">
-                  <CommandInput placeholder="Search technology..." />
+                  <CommandInput placeholder="Search web technology..." />
                   <CommandEmpty>No technology found.</CommandEmpty>
                   <CommandGroup className="overflow-y-scroll">
                     {webTechnologies.ids
                       .filter((wt) => {
-                        if ( wt === field.value[selected_webtech_index].id)
+                        if ( wt === field.value[selected_webTech_index].id)
                           return true;
                         for (const swt of field.value) {
                           if (swt.id === wt) return false;
                         }
                         return true;
                       })
-                      .map((webtech_id) => (
+                      .map((webTechnology_id) => (
                         <CommandItem
-                          value={webTechnologies.names[webtech_id]}
-                          key={webtech_id}
+                          value={webTechnologies.names[webTechnology_id]}
+                          key={webTechnology_id}
                           onSelect={() => {
                             form.setValue(field.name,
                               field.value.map((wt, wti) => {
-                                if (wti === selected_webtech_index)
+                                if (wti === selected_webTech_index)
                                   return {
-                                    id: webtech_id,
+                                    id: webTechnology_id,
                                     proficiency: wt.proficiency,
                                     recommendation: wt.recommendation,
                                     purpose: wt.purpose,
@@ -128,13 +127,13 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
                           <Check
                             className={cn(
                               "mr-2 h-4 w-4",
-                              webtech_id ===
-                                field.value[selected_webtech_index].id
+                              webTechnology_id ===
+                                field.value[selected_webTech_index].id
                                 ? "opacity-100"
                                 : "opacity-0",
                             )}
                           />
-                          {webTechnologies.names[webtech_id]}
+                          {webTechnologies.names[webTechnology_id]}
                         </CommandItem>
                       ))}
                   </CommandGroup>
@@ -163,11 +162,14 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
                       min={0}
                       max={100}
                       step={1}
-                      defaultValue={[50]}
+                      defaultValue={
+                        (selected_webTechnology.proficiency === -1) ? [50] :
+                        [selected_webTechnology.proficiency]
+                        }
                       onValueCommit={(val) => {
                         form.setValue(field.name,
                           field.value.map((wt, wti) => {
-                            if (wti === selected_webtech_index)
+                            if (wti === selected_webTech_index)
                               return {
                                 id: wt.id,
                                 proficiency: val[0],
@@ -200,11 +202,14 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
                       min={0}
                       max={100}
                       step={1}
-                      defaultValue={[50]}
+                      defaultValue={
+                        (selected_webTechnology.recommendation === -1) ? [50] :
+                        [selected_webTechnology.recommendation]
+                        }
                       onValueCommit={(val) => {
                         form.setValue(field.name,
                           field.value.map((wt, wti) => {
-                            if (wti === selected_webtech_index)
+                            if (wti === selected_webTech_index)
                               return {
                                 id: wt.id,
                                 proficiency: wt.proficiency,
@@ -226,11 +231,11 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
                   <div className="px-2 xl:w-96 xl:pl-0 oveflow-hidden">
                     <Select onValueChange={(value) => {
                       const new_purpose = value;
-                      if (value === "Other (please specify)") {
-                        // TODO: Add dialog
-                      }
+                      // if (value === "Other (please specify)") {
+                      //   TODO: Add dialog
+                      // }
                       form.setValue(field.name, field.value.map((wt, wti) => {
-                          if (wti === selected_webtech_index) {
+                          if (wti === selected_webTech_index) {
                             return {
                               id: wt.id,
                               proficiency: wt.proficiency,
@@ -241,14 +246,14 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
                           return wt;
                         })
                       )
-                    }}>
+                    }} value={selected_webTechnology.purpose}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select reason"/>
                       </SelectTrigger>
                       <SelectContent>
                         {purposes.map((purpose, i) => {
                           return (
-                            <SelectItem key={i} value={purpose}>{purpose}</SelectItem>
+                            <SelectItem key={i} value={purpose}>{purpose.charAt(0).toUpperCase() + purpose.slice(1)}</SelectItem>
                           )
                           })}
                       </SelectContent>
@@ -260,7 +265,7 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
 
             <div className="flex items-center w-5 max-xl:hidden"></div>
           </div>
-          {form.formState.isSubmitted && <WebTechnologyError errObject={form.formState.errors} index={selected_webtech_index}
+          {form.formState.isSubmitted && <WebTechError errObject={form.formState.errors} index={selected_webTech_index}
           className="max-xl:hidden"/>}
           </div>
         );
@@ -283,21 +288,21 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
             <CommandEmpty>No technology found.</CommandEmpty>
             <CommandGroup className="overflow-y-scroll">
               {webTechnologies.ids
-                .filter((webtech_id) => {
+                .filter((webTechnology_id) => {
                   for (const wt of field.value) {
-                    if (webtech_id === wt.id) return false;
+                    if (webTechnology_id === wt.id) return false;
                   }
                   return true;
                 })
-                .map((webtech_id) => (
+                .map((webTechnology_id) => (
                   <CommandItem
-                    value={webTechnologies.names[webtech_id]}
-                    key={webtech_id}
+                    value={webTechnologies.names[webTechnology_id]}
+                    key={webTechnology_id}
                     onSelect={() => {
                       form.setValue(field.name, [
                         ...field.value,
                         {
-                          id: webtech_id,
+                          id: webTechnology_id,
                           proficiency: -1,
                           recommendation: -1,
                           purpose: "",
@@ -305,7 +310,7 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
                       ]);
                     }}
                   >
-                    {webTechnologies.names[webtech_id]}
+                    {webTechnologies.names[webTechnology_id]}
                   </CommandItem>
                 ))}
             </CommandGroup>

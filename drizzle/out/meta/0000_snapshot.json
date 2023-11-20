@@ -27,144 +27,6 @@
       "foreignKeys": {},
       "uniqueConstraints": {}
     },
-    "people": {
-      "name": "people",
-      "columns": {
-        "id": {
-          "autoincrement": false,
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "generated_id": {
-          "autoincrement": false,
-          "name": "generated_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "autoincrement": false,
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "gender": {
-          "autoincrement": false,
-          "name": "gender",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "skill": {
-          "autoincrement": false,
-          "name": "skill",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "compositePrimaryKeys": {},
-      "indexes": {
-        "uuid": {
-          "name": "uuid",
-          "columns": [
-            "generated_id"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {},
-      "uniqueConstraints": {}
-    },
-    "language_responses": {
-      "name": "language_responses",
-      "columns": {
-        "person_id": {
-          "autoincrement": false,
-          "name": "person_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "language_id": {
-          "autoincrement": false,
-          "name": "language_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "proficiency": {
-          "autoincrement": false,
-          "name": "proficiency",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "likeability": {
-          "autoincrement": false,
-          "name": "likeability",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "purpose": {
-          "autoincrement": false,
-          "name": "purpose",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "compositePrimaryKeys": {},
-      "indexes": {
-        "lang_person_idx": {
-          "name": "lang_person_idx",
-          "columns": [
-            "person_id"
-          ],
-          "isUnique": false
-        },
-        "lang_idx": {
-          "name": "lang_idx",
-          "columns": [
-            "language_id"
-          ],
-          "isUnique": false
-        }
-      },
-      "foreignKeys": {
-        "language_responses_language_id_language_choices_id_fk": {
-          "name": "language_responses_language_id_language_choices_id_fk",
-          "tableFrom": "language_responses",
-          "tableTo": "language_choices",
-          "columnsFrom": [
-            "language_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "language_responses_person_id_people_id_fk": {
-          "name": "language_responses_person_id_people_id_fk",
-          "tableFrom": "language_responses",
-          "tableTo": "people",
-          "columnsFrom": [
-            "person_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "uniqueConstraints": {}
-    },
     "language_choices": {
       "name": "language_choices",
       "columns": {
@@ -256,6 +118,230 @@
       "compositePrimaryKeys": {},
       "indexes": {},
       "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "people": {
+      "name": "people",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "generated_id": {
+          "autoincrement": false,
+          "name": "generated_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "autoincrement": false,
+          "name": "gender",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skill": {
+          "autoincrement": false,
+          "name": "skill",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "uuid": {
+          "name": "uuid",
+          "columns": [
+            "generated_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "web_tech_responses": {
+      "name": "web_tech_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "web_tech_id": {
+          "autoincrement": false,
+          "name": "web_tech_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proficiency": {
+          "autoincrement": false,
+          "name": "proficiency",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "likeability": {
+          "autoincrement": false,
+          "name": "likeability",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "web_tech_idx": {
+          "name": "web_tech_idx",
+          "columns": [
+            "web_tech_id"
+          ],
+          "isUnique": false
+        },
+        "web_tech_person_idx": {
+          "name": "web_tech_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "web_tech_responses_person_id_people_id_fk": {
+          "name": "web_tech_responses_person_id_people_id_fk",
+          "tableFrom": "web_tech_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "web_tech_responses_web_tech_id_web_tech_choices_id_fk": {
+          "name": "web_tech_responses_web_tech_id_web_tech_choices_id_fk",
+          "tableFrom": "web_tech_responses",
+          "tableTo": "web_tech_choices",
+          "columnsFrom": [
+            "web_tech_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "language_responses": {
+      "name": "language_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "language_id": {
+          "autoincrement": false,
+          "name": "language_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proficiency": {
+          "autoincrement": false,
+          "name": "proficiency",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "likeability": {
+          "autoincrement": false,
+          "name": "likeability",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "lang_idx": {
+          "name": "lang_idx",
+          "columns": [
+            "language_id"
+          ],
+          "isUnique": false
+        },
+        "lang_person_idx": {
+          "name": "lang_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "language_responses_person_id_people_id_fk": {
+          "name": "language_responses_person_id_people_id_fk",
+          "tableFrom": "language_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "language_responses_language_id_language_choices_id_fk": {
+          "name": "language_responses_language_id_language_choices_id_fk",
+          "tableFrom": "language_responses",
+          "tableTo": "language_choices",
+          "columnsFrom": [
+            "language_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "uniqueConstraints": {}
     }
   },

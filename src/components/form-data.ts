@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { databaseChoices, languageChoices, languageResponses, people, webTechChoices } from "../../drizzle/out/schema";
+import { databaseChoices, languageChoices, languageResponses, people, webTechChoices, webTechResponses } from "../../drizzle/out/schema";
 import { eq } from "drizzle-orm";
 
 export type formType = {
@@ -46,6 +46,7 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
       return -1
     }
     const person = db_response[0]
+
     const language_db_response = await db
       .select()
       .from(languageResponses)
@@ -64,6 +65,24 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
         })
     }
 
+    const web_tech_db_response = await db
+      .select()
+      .from(webTechResponses)
+      .where(eq(webTechResponses.personId, person.id))
+
+    let webTechnologies: formType["webTechnologies"] = []
+    if (web_tech_db_response.length !== 0) {
+      webTechnologies = web_tech_db_response
+        .map((entry) => {
+          return {
+            id: entry.webTechId,
+            proficiency: entry.proficiency,
+            recommendation: entry.likeability,
+            purpose: entry.purpose,
+          }
+        })
+    }
+
     return {
       email: person.email,
       age: 18,
@@ -71,7 +90,7 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
       skill: person.skill,
       // occupation: string,
       languages: languages,
-      webTechnologies: [],
+      webTechnologies: webTechnologies,
       databases: [],
       newLanguages: [],
     }

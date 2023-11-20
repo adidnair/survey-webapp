@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/db/db";
 import { formType } from "./form-data";
-import { languageResponses, people } from "../../drizzle/out/schema";
+import { languageResponses, webTechResponses, people } from "../../drizzle/out/schema";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
@@ -63,6 +63,20 @@ export const pushToDB = async (values: formType, id: number | null) => {
         );
       }
 
+      if (values.webTechnologies.length !== 0) {
+        await db.insert(webTechResponses).values(
+          values.webTechnologies.map((entry) => {
+            return {
+              personId: id,
+              webTechId: entry.id,
+              proficiency: entry.proficiency,
+              likeability: entry.recommendation,
+              purpose: entry.purpose,
+            };
+          }),
+        );
+      }
+
       return prev_data[0].generatedId;
     } else {
       let gen_id = randomUUID().toString();
@@ -103,6 +117,20 @@ export const pushToDB = async (values: formType, id: number | null) => {
               return {
                 personId: new_row[0].id,
                 languageId: entry.id,
+                proficiency: entry.proficiency,
+                likeability: entry.recommendation,
+                purpose: entry.purpose,
+              };
+            }),
+          );
+        }
+
+        if (values.webTechnologies.length !== 0) {
+          await db.insert(webTechResponses).values(
+            values.webTechnologies.map((entry) => {
+              return {
+                personId: new_row[0].id,
+                webTechId: entry.id,
                 proficiency: entry.proficiency,
                 likeability: entry.recommendation,
                 purpose: entry.purpose,
