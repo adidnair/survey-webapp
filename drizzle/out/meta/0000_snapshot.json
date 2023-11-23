@@ -343,6 +343,92 @@
         }
       },
       "uniqueConstraints": {}
+    },
+    "database_responses": {
+      "name": "database_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "database_id": {
+          "autoincrement": false,
+          "name": "database_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proficiency": {
+          "autoincrement": false,
+          "name": "proficiency",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "likeability": {
+          "autoincrement": false,
+          "name": "likeability",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "db_person_idx": {
+          "name": "db_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        },
+        "db_idx": {
+          "name": "db_idx",
+          "columns": [
+            "database_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "database_responses_database_id_database_choices_id_fk": {
+          "name": "database_responses_database_id_database_choices_id_fk",
+          "tableFrom": "database_responses",
+          "tableTo": "database_choices",
+          "columnsFrom": [
+            "database_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "database_responses_person_id_people_id_fk": {
+          "name": "database_responses_person_id_people_id_fk",
+          "tableFrom": "database_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
     }
   },
   "enums": {},

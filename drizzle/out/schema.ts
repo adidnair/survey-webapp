@@ -65,3 +65,17 @@ export const languageResponses = sqliteTable("language_responses", {
 		langPersonIdx: index("lang_person_idx").on(table.personId),
 	}
 });
+
+export const databaseResponses = sqliteTable("database_responses", {
+	personId: integer("person_id").notNull().references(() => people.id, { onDelete: "cascade" } ),
+	databaseId: integer("database_id").notNull().references(() => databaseChoices.id, { onDelete: "cascade" } ),
+	proficiency: integer("proficiency").notNull(),
+	likeability: integer("likeability").notNull(),
+	purpose: text("purpose").notNull(),
+},
+(table) => {
+	return {
+		dbPersonIdx: index("db_person_idx").on(table.personId),
+		dbIdx: index("db_idx").on(table.databaseId),
+	}
+});

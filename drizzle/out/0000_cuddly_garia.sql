@@ -52,9 +52,21 @@ CREATE TABLE `language_responses` (
 	FOREIGN KEY (`language_id`) REFERENCES `language_choices`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
+CREATE TABLE `database_responses` (
+	`person_id` integer NOT NULL,
+	`database_id` integer NOT NULL,
+	`proficiency` integer NOT NULL,
+	`likeability` integer NOT NULL,
+	`purpose` text NOT NULL,
+	FOREIGN KEY (`database_id`) REFERENCES `database_choices`(`id`) ON UPDATE no action ON DELETE cascade,
+	FOREIGN KEY (`person_id`) REFERENCES `people`(`id`) ON UPDATE no action ON DELETE cascade
+);
+--> statement-breakpoint
 CREATE UNIQUE INDEX `uuid` ON `people` (`generated_id`);--> statement-breakpoint
 CREATE INDEX `web_tech_idx` ON `web_tech_responses` (`web_tech_id`);--> statement-breakpoint
 CREATE INDEX `web_tech_person_idx` ON `web_tech_responses` (`person_id`);--> statement-breakpoint
 CREATE INDEX `lang_idx` ON `language_responses` (`language_id`);--> statement-breakpoint
-CREATE INDEX `lang_person_idx` ON `language_responses` (`person_id`);
+CREATE INDEX `lang_person_idx` ON `language_responses` (`person_id`);--> statement-breakpoint
+CREATE INDEX `db_person_idx` ON `database_responses` (`person_id`);--> statement-breakpoint
+CREATE INDEX `db_idx` ON `database_responses` (`database_id`);
 */

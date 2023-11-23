@@ -35,6 +35,7 @@ import {
 } from "./ui/alert-dialog";
 import { useRouter } from "next/navigation";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { Databases } from "./questions/databases";
 
 const SurveyForm = () => {
   const formDataPromiseResult = use(useFormChoicesPromise());
@@ -443,6 +444,30 @@ const SurveyForm = () => {
                   <FormDescription>
                     Please select all the web frameworks, libraries or other
                     technologies you know about.
+                  </FormDescription>
+                </FormItem>
+              );
+            }}
+          />
+
+          <Separator />
+
+          <FormField
+            control={form.control}
+            name="databases"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="mb-1">Web Technologies</FormLabel>
+                  <FormControl>
+                    <Databases
+                      databases={formData.databases}
+                      form={form}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please select all the database technologies you know about.
                   </FormDescription>
                 </FormItem>
               );

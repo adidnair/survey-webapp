@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { databaseChoices, languageChoices, languageResponses, people, webTechChoices, webTechResponses } from "../../drizzle/out/schema";
+import { databaseChoices, databaseResponses, languageChoices, languageResponses, people, webTechChoices, webTechResponses } from "../../drizzle/out/schema";
 import { eq } from "drizzle-orm";
 
 export type formType = {
@@ -83,6 +83,24 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
         })
     }
 
+    const database_db_response = await db
+      .select()
+      .from(databaseResponses)
+      .where(eq(databaseResponses.personId, person.id))
+
+    let databases: formType["databases"] = []
+    if (database_db_response.length !== 0) {
+      databases = database_db_response
+        .map((entry) => {
+          return {
+            id: entry.databaseId,
+            proficiency: entry.proficiency,
+            recommendation: entry.likeability,
+            purpose: entry.purpose,
+          }
+        })
+    }
+
     return {
       email: person.email,
       age: 18,
@@ -91,7 +109,7 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
       // occupation: string,
       languages: languages,
       webTechnologies: webTechnologies,
-      databases: [],
+      databases: databases,
       newLanguages: [],
     }
   } catch (err) {
@@ -105,8 +123,8 @@ export const getDbPromise = async (prevFilledId: null | string) => {
   try {
     // Get data
     const langs = await db.select().from(languageChoices).where(eq(languageChoices.verified, 1))
-    const webtechs = await db.select().from(webTechChoices).all()
-    const databases = await db.select().from(databaseChoices).all()
+    const webtechs = await db.select().from(webTechChoices).where(eq(webTechChoices.verified, 1))
+    const databases = await db.select().from(databaseChoices).where(eq(databaseChoices.verified, 1))
 
     // Calculate largest 
     const largest_lang = langs.reduce((prev, curr) => {
