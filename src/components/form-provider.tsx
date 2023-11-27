@@ -1,26 +1,26 @@
 "use client"
 
 import { createContext, useContext } from "react"
-import type { dbPromise } from "./form-data";
+import { getDbPromise } from "./form-data";
 
-const FormContext = createContext<typeof dbPromise | null>(null);
+const FormContext = createContext<ReturnType<typeof getDbPromise> | null>(null);
 
-export const useFormPromise = () => {
+export const useFormChoicesPromise = () => {
   const data = useContext(FormContext)
   if (!data) throw new Error("form data should be provided as context")
   return data
 }
 
-const FormProvider = ({
+const FormChoicesProvider = ({
   children,
   formPromise,
 }: {
   children: React.ReactNode,
-  formPromise: typeof dbPromise,
+  formPromise: ReturnType<typeof getDbPromise>,
 }) => {
   return (
     <FormContext.Provider value={formPromise}>{children}</FormContext.Provider>
   )
 }
 
-export default FormProvider
+export default FormChoicesProvider

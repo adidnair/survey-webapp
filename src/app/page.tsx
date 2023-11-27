@@ -1,27 +1,18 @@
-import FormProvider from "@/components/form-provider";
-import SurveyForm from "@/components/survey-form";
 import ToggleTheme from "@/components/toggle-theme";
-import { dbPromise } from "@/components/form-data";
-import { ErrorBoundary } from "react-error-boundary";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <main className="flex min-h-screen flex-col">
-      <div className="flex bg-background sticky top-0 border-b border-border w-screen h-16 items-center">
-        <div className="flex-1"></div>
-        <div className="flex w-full justify-center text-xl">Survey</div>
-        <div className="flex-1"></div>
-        <div className="mr-4 h-1/2">
-          <ToggleTheme />
-        </div>
-      </div>
-      <div className="mx-8 md:mx-16 lg:mx-32 py-20">
-        <ErrorBoundary fallback={<div>oops!</div>}>
-          <FormProvider formPromise={dbPromise}>
-            <SurveyForm />
-          </FormProvider>
-        </ErrorBoundary>
-      </div>
-    </main>
+  <div className="flex flex-col gap-16 h-screen w-screen items-center justify-center relative">
+    <div className="absolute h-8 top-4 right-4">
+      <ToggleTheme />
+    </div>
+    <div className="text-3xl text-center w-[90%] lg:text-6xl font-bold">Computer Science Trends Survey</div>
+    <div className="text-center w-[80%] lg:w-1/2">This is a survey we are conducting as part of our survey lab.<br />We are collecting this data to analyze trends and patterns in the current computer science environment.<br />Any data we collect will be strictly used for this purpose only and will not be shared to anyone else or be used by us for any other purpose</div>
+    <Link href="/new_survey" className="text-3xl">
+      <Button >Go to survey</Button>
+    </Link>
+  </div>
   )
 }
