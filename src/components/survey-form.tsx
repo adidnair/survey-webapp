@@ -301,7 +301,12 @@ const SurveyForm = () => {
           )}
           <div className="flex h-full items-center justify-center">
             {(modalState === "submitting")
-              ? "Submitting..." : (modalState === "success")
+              ? <div className="flex flex-col items-center gap-3">
+                  <p className="text-3xl animate-pulse">Submitting...</p>
+                  <p className="text-muted text-center">If this takes too long, 
+                  close this dialog and try submitting again.
+                  </p>
+                </div> : (modalState === "success")
                 ? <div className="flex flex-col items-center gap-6">
                     <CheckCircle color="#65A30D" size={100}/>
                     <p>Successfully submitted!</p>
@@ -331,7 +336,7 @@ const SurveyForm = () => {
             </Button>
             </AlertDialogFooter>
           }
-          {(modalState === "error") &&
+          {(modalState === "error" || modalState === "submitting") &&
             <AlertDialogFooter>
               <AlertDialogCancel
               onClick={() => {
