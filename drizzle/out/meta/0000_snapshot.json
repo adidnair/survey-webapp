@@ -429,6 +429,570 @@
         }
       },
       "uniqueConstraints": {}
+    },
+    "editor_choices": {
+      "name": "editor_choices",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "verified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "editor_responses": {
+      "name": "editor_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "editor_id": {
+          "autoincrement": false,
+          "name": "editor_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rating": {
+          "autoincrement": false,
+          "name": "rating",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "editor_person_idx": {
+          "name": "editor_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        },
+        "editor_idx": {
+          "name": "editor_idx",
+          "columns": [
+            "editor_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "editor_responses_editor_id_editor_choices_id_fk": {
+          "name": "editor_responses_editor_id_editor_choices_id_fk",
+          "tableFrom": "editor_responses",
+          "tableTo": "editor_choices",
+          "columnsFrom": [
+            "editor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "editor_responses_person_id_people_id_fk": {
+          "name": "editor_responses_person_id_people_id_fk",
+          "tableFrom": "editor_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "os_choices": {
+      "name": "os_choices",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "verified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "os_responses": {
+      "name": "os_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "os_id": {
+          "autoincrement": false,
+          "name": "os_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rating": {
+          "autoincrement": false,
+          "name": "rating",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "os_person_idx": {
+          "name": "os_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        },
+        "os_idx": {
+          "name": "os_idx",
+          "columns": [
+            "os_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "os_responses_os_id_os_choices_id_fk": {
+          "name": "os_responses_os_id_os_choices_id_fk",
+          "tableFrom": "os_responses",
+          "tableTo": "os_choices",
+          "columnsFrom": [
+            "os_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "os_responses_person_id_people_id_fk": {
+          "name": "os_responses_person_id_people_id_fk",
+          "tableFrom": "os_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "cloud_choices": {
+      "name": "cloud_choices",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "verified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "cloud_responses": {
+      "name": "cloud_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cloud_id": {
+          "autoincrement": false,
+          "name": "cloud_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rating": {
+          "autoincrement": false,
+          "name": "rating",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "cloud_person_idx": {
+          "name": "cloud_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        },
+        "cloud_idx": {
+          "name": "cloud_idx",
+          "columns": [
+            "cloud_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "cloud_responses_cloud_id_cloud_choices_id_fk": {
+          "name": "cloud_responses_cloud_id_cloud_choices_id_fk",
+          "tableFrom": "cloud_responses",
+          "tableTo": "cloud_choices",
+          "columnsFrom": [
+            "cloud_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "cloud_responses_person_id_people_id_fk": {
+          "name": "cloud_responses_person_id_people_id_fk",
+          "tableFrom": "cloud_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "app_tech_choices": {
+      "name": "app_tech_choices",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "verified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "app_tech_responses": {
+      "name": "app_tech_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "app_tech_id": {
+          "autoincrement": false,
+          "name": "app_tech_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proficiency": {
+          "autoincrement": false,
+          "name": "proficiency",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "likeability": {
+          "autoincrement": false,
+          "name": "likeability",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "app_tech_person_idx": {
+          "name": "app_tech_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        },
+        "app_tech_idx": {
+          "name": "app_tech_idx",
+          "columns": [
+            "app_tech_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "app_tech_responses_app_tech_id_app_tech_choices_id_fk": {
+          "name": "app_tech_responses_app_tech_id_app_tech_choices_id_fk",
+          "tableFrom": "app_tech_responses",
+          "tableTo": "app_tech_choices",
+          "columnsFrom": [
+            "app_tech_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "app_tech_responses_person_id_people_id_fk": {
+          "name": "app_tech_responses_person_id_people_id_fk",
+          "tableFrom": "app_tech_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "other_tech_choices": {
+      "name": "other_tech_choices",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "autoincrement": false,
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "verified": {
+          "default": 0,
+          "autoincrement": false,
+          "name": "verified",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {},
+      "foreignKeys": {},
+      "uniqueConstraints": {}
+    },
+    "other_tech_responses": {
+      "name": "other_tech_responses",
+      "columns": {
+        "person_id": {
+          "autoincrement": false,
+          "name": "person_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "other_tech_id": {
+          "autoincrement": false,
+          "name": "other_tech_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "proficiency": {
+          "autoincrement": false,
+          "name": "proficiency",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "likeability": {
+          "autoincrement": false,
+          "name": "likeability",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "purpose": {
+          "autoincrement": false,
+          "name": "purpose",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "other_tech_person_idx": {
+          "name": "other_tech_person_idx",
+          "columns": [
+            "person_id"
+          ],
+          "isUnique": false
+        },
+        "other_tech_idx": {
+          "name": "other_tech_idx",
+          "columns": [
+            "other_tech_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "other_tech_responses_other_tech_id_other_tech_choices_id_fk": {
+          "name": "other_tech_responses_other_tech_id_other_tech_choices_id_fk",
+          "tableFrom": "other_tech_responses",
+          "tableTo": "other_tech_choices",
+          "columnsFrom": [
+            "other_tech_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "other_tech_responses_person_id_people_id_fk": {
+          "name": "other_tech_responses_person_id_people_id_fk",
+          "tableFrom": "other_tech_responses",
+          "tableTo": "people",
+          "columnsFrom": [
+            "person_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "uniqueConstraints": {}
     }
   },
   "enums": {},

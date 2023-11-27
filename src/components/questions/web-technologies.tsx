@@ -276,7 +276,7 @@ export const WebTechnologies = ({webTechnologies, form, field} : {
           <Button
             variant="outline"
             role="combobox"
-            className="w-52 justify-between text-muted-foreground bg-muted"
+            className="w-80 justify-between text-muted-foreground bg-muted"
           >
             {"Select technology"}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

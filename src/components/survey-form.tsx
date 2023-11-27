@@ -36,6 +36,8 @@ import {
 import { useRouter } from "next/navigation";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { Databases } from "./questions/databases";
+import { AppTechnologies } from "./questions/app-technologies";
+import { OtherTechnologies } from "./questions/other-technologies";
 
 const SurveyForm = () => {
   const formDataPromiseResult = use(useFormChoicesPromise());
@@ -95,6 +97,22 @@ const SurveyForm = () => {
         purpose: z.string().min(1, { message: "Please select a reason" }),
       })
       .array(),
+    appTechnologies: z
+      .object({
+        id: z.number().int().min(1),
+        proficiency: z
+          .number()
+          .int()
+          .min(0, { message: "Please enter your proficiency" })
+          .max(100),
+        recommendation: z
+          .number()
+          .int()
+          .min(0, { message: "Please enter your recommendation" })
+          .max(100),
+        purpose: z.string().min(1, { message: "Please select a reason" }),
+      })
+      .array(),
     databases: z
       .object({
         id: z.number().int().min(1),
@@ -104,6 +122,33 @@ const SurveyForm = () => {
           .min(0, { message: "Please enter your proficiency" })
           .max(100),
         recommendation: z
+          .number()
+          .int()
+          .min(0, { message: "Please enter your recommendation" })
+          .max(100),
+        purpose: z.string().min(1, { message: "Please select a reason" }),
+      })
+      .array(),
+    otherTechnologies: z
+      .object({
+        id: z.number().int().min(1),
+        proficiency: z
+          .number()
+          .int()
+          .min(0, { message: "Please enter your proficiency" })
+          .max(100),
+        recommendation: z
+          .number()
+          .int()
+          .min(0, { message: "Please enter your recommendation" })
+          .max(100),
+        purpose: z.string().min(1, { message: "Please select a reason" }),
+      })
+      .array(),
+    clouds: z
+      .object({
+        id: z.number().int().min(1),
+        rating: z
           .number()
           .int()
           .min(0, { message: "Please enter your recommendation" })
@@ -139,7 +184,10 @@ const SurveyForm = () => {
       skill: prevFilledData.skill,
       languages: prevFilledData.languages,
       webTechnologies: prevFilledData.webTechnologies,
+      appTechnologies: prevFilledData.appTechnologies,
       databases: prevFilledData.databases,
+      otherTechnologies: prevFilledData.otherTechnologies,
+      clouds: prevFilledData.clouds,
       newLanguages: [],
     }
     : {
@@ -148,7 +196,10 @@ const SurveyForm = () => {
       gender: "",
       languages: [],
       webTechnologies: [],
+      appTechnologies: [],
+      otherTechnologies: [],
       databases: [],
+      clouds: [],
       newLanguages: [],
     },
   });
@@ -170,6 +221,7 @@ const SurveyForm = () => {
 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
     let gen_id: string | -1 = -1
     setModalState("submitting")
     setOpenModal(true);
@@ -454,11 +506,36 @@ const SurveyForm = () => {
 
           <FormField
             control={form.control}
+            name="appTechnologies"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="mb-1">App Technologies</FormLabel>
+                  <FormControl>
+                    <AppTechnologies
+                      appTechnologies={formData.appTechnologies}
+                      form={form}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please select all the app frameworks, libraries or other
+                    technologies you know about.
+                  </FormDescription>
+                </FormItem>
+              );
+            }}
+          />
+
+          <Separator />
+
+          <FormField
+            control={form.control}
             name="databases"
             render={({ field }) => {
               return (
                 <FormItem className="flex flex-col">
-                  <FormLabel className="mb-1">Web Technologies</FormLabel>
+                  <FormLabel className="mb-1">Database Technologies</FormLabel>
                   <FormControl>
                     <Databases
                       databases={formData.databases}
@@ -468,6 +545,31 @@ const SurveyForm = () => {
                   </FormControl>
                   <FormDescription>
                     Please select all the database technologies you know about.
+                  </FormDescription>
+                </FormItem>
+              );
+            }}
+          />
+
+          <Separator />
+
+          <FormField
+            control={form.control}
+            name="otherTechnologies"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="mb-1">Other Technologies</FormLabel>
+                  <FormControl>
+                    <OtherTechnologies
+                      otherTechnologies={formData.otherTechnologies}
+                      form={form}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please select all the frameworks, libraries or other
+                    technologies you know about.
                   </FormDescription>
                 </FormItem>
               );

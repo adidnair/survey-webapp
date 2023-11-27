@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/db/db";
 import { formType } from "./form-data";
-import { languageResponses, webTechResponses, people, databaseResponses } from "../../drizzle/out/schema";
+import { languageResponses, webTechResponses, people, databaseResponses, appTechResponses, otherTechResponses, cloudResponses } from "../../drizzle/out/schema";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
@@ -77,6 +77,34 @@ export const pushToDB = async (values: formType, id: number | null) => {
         );
       }
 
+      if (values.appTechnologies.length !== 0) {
+        await db.insert(appTechResponses).values(
+          values.appTechnologies.map((entry) => {
+            return {
+              personId: id,
+              appTechId: entry.id,
+              proficiency: entry.proficiency,
+              likeability: entry.recommendation,
+              purpose: entry.purpose,
+            };
+          }),
+        );
+      }
+
+      if (values.otherTechnologies.length !== 0) {
+        await db.insert(otherTechResponses).values(
+          values.otherTechnologies.map((entry) => {
+            return {
+              personId: id,
+              otherTechId: entry.id,
+              proficiency: entry.proficiency,
+              likeability: entry.recommendation,
+              purpose: entry.purpose,
+            };
+          }),
+        );
+      }
+
       if (values.databases.length !== 0) {
         await db.insert(databaseResponses).values(
           values.databases.map((entry) => {
@@ -85,6 +113,19 @@ export const pushToDB = async (values: formType, id: number | null) => {
               databaseId: entry.id,
               proficiency: entry.proficiency,
               likeability: entry.recommendation,
+              purpose: entry.purpose,
+            };
+          }),
+        );
+      }
+
+      if (values.clouds.length !== 0) {
+        await db.insert(cloudResponses).values(
+          values.clouds.map((entry) => {
+            return {
+              personId: id,
+              cloudId: entry.id,
+              rating: entry.rating,
               purpose: entry.purpose,
             };
           }),
@@ -153,6 +194,34 @@ export const pushToDB = async (values: formType, id: number | null) => {
           );
         }
 
+        if (values.appTechnologies.length !== 0) {
+          await db.insert(appTechResponses).values(
+            values.appTechnologies.map((entry) => {
+              return {
+                personId: new_row[0].id,
+                appTechId: entry.id,
+                proficiency: entry.proficiency,
+                likeability: entry.recommendation,
+                purpose: entry.purpose,
+              };
+            }),
+          );
+        }
+
+        if (values.otherTechnologies.length !== 0) {
+          await db.insert(otherTechResponses).values(
+            values.otherTechnologies.map((entry) => {
+              return {
+                personId: new_row[0].id,
+                otherTechId: entry.id,
+                proficiency: entry.proficiency,
+                likeability: entry.recommendation,
+                purpose: entry.purpose,
+              };
+            }),
+          );
+        }
+
         if (values.databases.length !== 0) {
           await db.insert(databaseResponses).values(
             values.databases.map((entry) => {
@@ -161,6 +230,19 @@ export const pushToDB = async (values: formType, id: number | null) => {
                 databaseId: entry.id,
                 proficiency: entry.proficiency,
                 likeability: entry.recommendation,
+                purpose: entry.purpose,
+              };
+            }),
+          );
+        }
+
+        if (values.clouds.length !== 0) {
+          await db.insert(cloudResponses).values(
+            values.clouds.map((entry) => {
+              return {
+                personId: new_row[0].id,
+                cloudId: entry.id,
+                rating: entry.rating,
                 purpose: entry.purpose,
               };
             }),
