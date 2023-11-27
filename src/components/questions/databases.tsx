@@ -94,7 +94,7 @@ export const Databases = ({databases, form, field} : {
               <PopoverContent className="w-52 p-0">
                 <Command className="max-h-72">
                   <CommandInput placeholder="Search database technology..." />
-                  <CommandEmpty>No technology found.</CommandEmpty>
+                  <CommandEmpty>No match found.</CommandEmpty>
                   <CommandGroup className="overflow-y-scroll">
                     {databases.ids
                       .filter((db) => {
@@ -282,10 +282,10 @@ export const Databases = ({databases, form, field} : {
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-52 p-0">
+        <PopoverContent className="w-80 p-0">
           <Command className="max-h-72">
             <CommandInput placeholder="Search database technology..." />
-            <CommandEmpty>No technology found.</CommandEmpty>
+            <CommandEmpty>No match found.</CommandEmpty>
             <CommandGroup className="overflow-y-scroll">
               {databases.ids
                 .filter((database_id) => {

@@ -94,7 +94,7 @@ export const AppTechnologies = ({appTechnologies, form, field} : {
               <PopoverContent className="w-52 p-0">
                 <Command className="max-h-72">
                   <CommandInput placeholder="Search web technology..." />
-                  <CommandEmpty>No technology found.</CommandEmpty>
+                  <CommandEmpty>No match found.</CommandEmpty>
                   <CommandGroup className="overflow-y-scroll">
                     {appTechnologies.ids
                       .filter((at) => {
@@ -282,10 +282,10 @@ export const AppTechnologies = ({appTechnologies, form, field} : {
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-52 p-0">
+        <PopoverContent className="w-80 p-0">
           <Command className="max-h-72">
             <CommandInput placeholder="Search technology..." />
-            <CommandEmpty>No technology found.</CommandEmpty>
+            <CommandEmpty>No match found.</CommandEmpty>
             <CommandGroup className="overflow-y-scroll">
               {appTechnologies.ids
                 .filter((appTechnology_id) => {

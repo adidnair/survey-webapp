@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -38,6 +38,9 @@ import { AlertCircle, CheckCircle } from "lucide-react";
 import { Databases } from "./questions/databases";
 import { AppTechnologies } from "./questions/app-technologies";
 import { OtherTechnologies } from "./questions/other-technologies";
+import { Clouds } from "./questions/clouds";
+import { Editors } from "./questions/editors";
+import { OSs } from "./questions/oss";
 
 const SurveyForm = () => {
   const formDataPromiseResult = use(useFormChoicesPromise());
@@ -65,6 +68,28 @@ const SurveyForm = () => {
     gender: z.string().min(1, { message: "Please specify your gender" }),
     skill: z.enum(skill_levels as [string, ...string[]]),
     // occupation: z.string(),
+    oss: z
+      .object({
+        id: z.number().int().min(1),
+        rating: z
+          .number()
+          .int()
+          .min(0, { message: "Please enter your recommendation" })
+          .max(100),
+        purpose: z.string().min(1, { message: "Please select a reason" }),
+      })
+      .array(),
+    editors: z
+      .object({
+        id: z.number().int().min(1),
+        rating: z
+          .number()
+          .int()
+          .min(0, { message: "Please enter your recommendation" })
+          .max(100),
+        purpose: z.string().min(1, { message: "Please select a reason" }),
+      })
+      .array(),
     languages: z
       .object({
         id: z.number().int().min(1),
@@ -182,6 +207,8 @@ const SurveyForm = () => {
       age: prevFilledData.age,
       gender: prevFilledData.gender,
       skill: prevFilledData.skill,
+      oss: prevFilledData.oss,
+      editors: prevFilledData.editors,
       languages: prevFilledData.languages,
       webTechnologies: prevFilledData.webTechnologies,
       appTechnologies: prevFilledData.appTechnologies,
@@ -194,6 +221,8 @@ const SurveyForm = () => {
       email: "",
       age: undefined,
       gender: "",
+      oss: [],
+      editors: [],
       languages: [],
       webTechnologies: [],
       appTechnologies: [],
@@ -454,6 +483,54 @@ const SurveyForm = () => {
           />
 
           <Separator />
+          <FormField
+            control={form.control}
+            name="oss"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="mb-1">Operating Systems</FormLabel>
+                  <FormControl>
+                    <OSs
+                      oss={formData.oss}
+                      form={form}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please select all operating systems you know about.
+                  </FormDescription>
+                </FormItem>
+              );
+            }}
+          />
+
+          <Separator />
+
+
+          <FormField
+            control={form.control}
+            name="editors"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="mb-1">Code Editors</FormLabel>
+                  <FormControl>
+                    <Editors
+                      editors={formData.editors}
+                      form={form}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please select all the code editors you know about.
+                  </FormDescription>
+                </FormItem>
+              );
+            }}
+          />
+
+          <Separator />
 
           <FormField
             control={form.control}
@@ -570,6 +647,30 @@ const SurveyForm = () => {
                   <FormDescription>
                     Please select all the frameworks, libraries or other
                     technologies you know about.
+                  </FormDescription>
+                </FormItem>
+              );
+            }}
+          />
+
+          <Separator />
+
+          <FormField
+            control={form.control}
+            name="clouds"
+            render={({ field }) => {
+              return (
+                <FormItem className="flex flex-col">
+                  <FormLabel className="mb-1">Cloud Services</FormLabel>
+                  <FormControl>
+                    <Clouds
+                      clouds={formData.clouds}
+                      form={form}
+                      field={field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please select all the cloud services you know about.
                   </FormDescription>
                 </FormItem>
               );

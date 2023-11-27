@@ -1,7 +1,7 @@
 "use server";
 import { db } from "@/db/db";
 import { formType } from "./form-data";
-import { languageResponses, webTechResponses, people, databaseResponses, appTechResponses, otherTechResponses, cloudResponses } from "../../drizzle/out/schema";
+import { languageResponses, webTechResponses, people, databaseResponses, appTechResponses, otherTechResponses, cloudResponses, editorResponses, osResponses } from "../../drizzle/out/schema";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
@@ -48,6 +48,32 @@ export const pushToDB = async (values: formType, id: number | null) => {
         gender: values.gender,
         skill: values.skill,
       });
+
+      if (values.oss.length !== 0) {
+        await db.insert(osResponses).values(
+          values.oss.map((entry) => {
+            return {
+              personId: id,
+              osId: entry.id,
+              rating: entry.rating,
+              purpose: entry.purpose,
+            };
+          }),
+        );
+      }
+
+      if (values.editors.length !== 0) {
+        await db.insert(editorResponses).values(
+          values.editors.map((entry) => {
+            return {
+              personId: id,
+              editorId: entry.id,
+              rating: entry.rating,
+              purpose: entry.purpose,
+            };
+          }),
+        );
+      }
 
       if (values.languages.length !== 0) {
         await db.insert(languageResponses).values(
@@ -165,6 +191,32 @@ export const pushToDB = async (values: formType, id: number | null) => {
           skill: values.skill,
         })
         .returning();
+
+        if (values.oss.length !== 0) {
+          await db.insert(osResponses).values(
+            values.oss.map((entry) => {
+              return {
+                personId: new_row[0].id,
+                osId: entry.id,
+                rating: entry.rating,
+                purpose: entry.purpose,
+              };
+            }),
+          );
+        }
+
+        if (values.editors.length !== 0) {
+          await db.insert(editorResponses).values(
+            values.editors.map((entry) => {
+              return {
+                personId: new_row[0].id,
+                editorId: entry.id,
+                rating: entry.rating,
+                purpose: entry.purpose,
+              };
+            }),
+          );
+        }
 
         if (values.languages.length !== 0) {
           await db.insert(languageResponses).values(

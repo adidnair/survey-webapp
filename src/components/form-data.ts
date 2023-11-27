@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { appTechChoices, appTechResponses, cloudChoices, cloudResponses, databaseChoices, databaseResponses, languageChoices, languageResponses, otherTechChoices, otherTechResponses, people, webTechChoices, webTechResponses } from "../../drizzle/out/schema";
+import { appTechChoices, appTechResponses, cloudChoices, cloudResponses, databaseChoices, databaseResponses, editorChoices, editorResponses, languageChoices, languageResponses, osChoices, osResponses, otherTechChoices, otherTechResponses, people, webTechChoices, webTechResponses } from "../../drizzle/out/schema";
 import { eq } from "drizzle-orm";
 
 export type formType = {
@@ -8,6 +8,16 @@ export type formType = {
   gender: string,
   skill: string,
   // occupation: string,
+  oss: {
+      id: number,
+      rating: number,
+      purpose: string,
+  }[],
+  editors: {
+      id: number,
+      rating: number,
+      purpose: string,
+  }[],
   languages: {
       id: number,
       proficiency: number,
@@ -63,6 +73,40 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
       return -1
     }
     const person = db_response[0]
+
+    const os_db_response = await db
+      .select()
+      .from(osResponses)
+      .where(eq(osResponses.personId, person.id))
+
+    let oss: formType["oss"] = []
+    if (os_db_response.length !== 0) {
+      oss = os_db_response
+        .map((entry) => {
+          return {
+            id: entry.osId,
+            rating: entry.rating,
+            purpose: entry.purpose,
+          }
+        })
+    }
+
+    const editor_db_response = await db
+      .select()
+      .from(editorResponses)
+      .where(eq(editorResponses.personId, person.id))
+
+    let editors: formType["editors"] = []
+    if (editor_db_response.length !== 0) {
+      editors = editor_db_response
+        .map((entry) => {
+          return {
+            id: entry.editorId,
+            rating: entry.rating,
+            purpose: entry.purpose,
+          }
+        })
+    }
 
     const language_db_response = await db
       .select()
@@ -177,6 +221,8 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
       gender: person.gender,
       skill: person.skill,
       // occupation: string,
+      oss: oss,
+      editors: editors,
       languages: languages,
       webTechnologies: webTechnologies,
       appTechnologies: appTechnologies,
@@ -195,6 +241,8 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
 export const getDbPromise = async (prevFilledId: null | string) => {
   try {
     // Get data
+    const oss = await db.select().from(osChoices).where(eq(osChoices.verified, 1))
+    const editors = await db.select().from(editorChoices).where(eq(editorChoices.verified, 1))
     const langs = await db.select().from(languageChoices).where(eq(languageChoices.verified, 1))
     const webtechs = await db.select().from(webTechChoices).where(eq(webTechChoices.verified, 1))
     const apptechs = await db.select().from(appTechChoices).where(eq(appTechChoices.verified, 1))
@@ -203,6 +251,12 @@ export const getDbPromise = async (prevFilledId: null | string) => {
     const clouds = await db.select().from(cloudChoices).where(eq(cloudChoices.verified, 1))
 
     // Calculate largest 
+    const largest_os = oss.reduce((prev, curr) => {
+      return (prev && prev.id > curr.id) ? prev : curr
+    }).id
+    const largest_editor = editors.reduce((prev, curr) => {
+      return (prev && prev.id > curr.id) ? prev : curr
+    }).id
     const largest_lang = langs.reduce((prev, curr) => {
       return (prev && prev.id > curr.id) ? prev : curr
     }).id
@@ -223,6 +277,14 @@ export const getDbPromise = async (prevFilledId: null | string) => {
     }).id
 
     // set name arrays
+    let os_names: string[] = Array(largest_os+1)
+    for (const os of oss) {
+      os_names[os.id] = os.name
+    }
+    let editor_names: string[] = Array(largest_editor+1)
+    for (const editor of editors) {
+      editor_names[editor.id] = editor.name
+    }
     let lang_names: string[] = Array(largest_lang+1)
     for (const lang of langs) {
       lang_names[lang.id] = lang.name
@@ -248,6 +310,8 @@ export const getDbPromise = async (prevFilledId: null | string) => {
       cloud_names[cloud.id] = cloud.name
     }
 
+    const os_ids = (oss.map((os) => os.id))
+    const editor_ids = (editors.map((editor) => editor.id))
     const lang_ids = (langs.map((lang) => lang.id))  
     const webtech_ids = (webtechs.map((webf) => webf.id))
     const apptech_ids = (apptechs.map((appf) => appf.id))
@@ -263,6 +327,14 @@ export const getDbPromise = async (prevFilledId: null | string) => {
     console.log("database query promise created.")
     return {
       options: {
+        oss: {
+          ids: os_ids.sort((a, b) => os_names[a].localeCompare(os_names[b])),
+          names: os_names,
+        },
+        editors: {
+          ids: editor_ids.sort((a, b) => editor_names[a].localeCompare(editor_names[b])),
+          names: editor_names,
+        },
         languages: {
           ids: lang_ids.sort((a, b) => lang_names[a].localeCompare(lang_names[b])),
           names: lang_names,
