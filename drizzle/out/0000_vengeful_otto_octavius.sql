@@ -24,14 +24,6 @@ CREATE TABLE `database_choices` (
 	`verified` integer DEFAULT 0 NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE `people` (
-	`id` integer PRIMARY KEY NOT NULL,
-	`generated_id` text NOT NULL,
-	`email` text NOT NULL,
-	`gender` text NOT NULL,
-	`skill` text NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE `web_tech_responses` (
 	`person_id` integer NOT NULL,
 	`web_tech_id` integer NOT NULL,
@@ -139,7 +131,15 @@ CREATE TABLE `other_tech_responses` (
 	FOREIGN KEY (`person_id`) REFERENCES `people`(`id`) ON UPDATE no action ON DELETE cascade
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `uuid` ON `people` (`generated_id`);--> statement-breakpoint
+CREATE TABLE `people` (
+	`id` integer PRIMARY KEY NOT NULL,
+	`generated_id` text NOT NULL,
+	`email` text NOT NULL,
+	`gender` text NOT NULL,
+	`skill` text NOT NULL,
+	`occupation` text NOT NULL
+);
+--> statement-breakpoint
 CREATE INDEX `web_tech_idx` ON `web_tech_responses` (`web_tech_id`);--> statement-breakpoint
 CREATE INDEX `web_tech_person_idx` ON `web_tech_responses` (`person_id`);--> statement-breakpoint
 CREATE INDEX `lang_idx` ON `language_responses` (`language_id`);--> statement-breakpoint
@@ -155,5 +155,6 @@ CREATE INDEX `cloud_idx` ON `cloud_responses` (`cloud_id`);--> statement-breakpo
 CREATE INDEX `app_tech_person_idx` ON `app_tech_responses` (`person_id`);--> statement-breakpoint
 CREATE INDEX `app_tech_idx` ON `app_tech_responses` (`app_tech_id`);--> statement-breakpoint
 CREATE INDEX `other_tech_person_idx` ON `other_tech_responses` (`person_id`);--> statement-breakpoint
-CREATE INDEX `other_tech_idx` ON `other_tech_responses` (`other_tech_id`);
+CREATE INDEX `other_tech_idx` ON `other_tech_responses` (`other_tech_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `uuid` ON `people` (`generated_id`);
 */

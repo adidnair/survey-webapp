@@ -1,0 +1,18 @@
+export const occupations = [
+  "Non-Tech",
+  "Student",
+  "Software Developer/Engineer",
+  "Data Scientist/Analyst",
+  "IT Professional/Administrator",
+  "Computer Science Student/Researcher",
+  "Project Manager",
+  "Product Manager",
+  "Entrepreneur/Startup Founder",
+  "QA/Testing Professional",
+  "UX/UI Designer",
+  "Cybersecurity Professional",
+  "System Architect",
+  "Network Engineer",
+  "Technical Writer",
+  "Not listed",
+]

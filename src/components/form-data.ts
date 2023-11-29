@@ -7,7 +7,7 @@ export type formType = {
   age: number,
   gender: string,
   skill: string,
-  // occupation: string,
+  occupation: string,
   oss: {
       id: number,
       rating: number,
@@ -220,7 +220,7 @@ const get_submission = async (person_id: string): Promise<-1 | 0 | formType> => 
       age: 18,
       gender: person.gender,
       skill: person.skill,
-      // occupation: string,
+      occupation: person.occupation,
       oss: oss,
       editors: editors,
       languages: languages,

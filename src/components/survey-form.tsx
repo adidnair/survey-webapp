@@ -34,13 +34,17 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { useRouter } from "next/navigation";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, Check, CheckCircle, ChevronsUpDown } from "lucide-react";
 import { Databases } from "./questions/databases";
 import { AppTechnologies } from "./questions/app-technologies";
 import { OtherTechnologies } from "./questions/other-technologies";
 import { Clouds } from "./questions/clouds";
 import { Editors } from "./questions/editors";
 import { OSs } from "./questions/oss";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "./ui/command";
+import { cn } from "@/lib/utils";
+import { occupations } from "./questions/occupation";
 
 const SurveyForm = () => {
   const formDataPromiseResult = use(useFormChoicesPromise());
@@ -67,7 +71,7 @@ const SurveyForm = () => {
       }),
     gender: z.string().min(1, { message: "Please specify your gender" }),
     skill: z.enum(skill_levels as [string, ...string[]]),
-    // occupation: z.string(),
+    occupation: z.enum(occupations as [string, ...string[]]),
     oss: z
       .object({
         id: z.number().int().min(1),
@@ -207,6 +211,7 @@ const SurveyForm = () => {
       age: prevFilledData.age,
       gender: prevFilledData.gender,
       skill: prevFilledData.skill,
+      occupation: prevFilledData.occupation,
       oss: prevFilledData.oss,
       editors: prevFilledData.editors,
       languages: prevFilledData.languages,
@@ -488,6 +493,71 @@ const SurveyForm = () => {
           />
 
           <Separator />
+
+          <FormField
+            control={form.control}
+            name="occupation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Occupation</FormLabel>
+                <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={cn(
+                        "w-[200px] justify-between",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value
+                        ? occupations.find(
+                            (occupation) => occupation === field.value
+                          )
+                        : "Select occupation"}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search..." />
+                    <CommandEmpty>No match found.</CommandEmpty>
+                    <CommandGroup>
+                      {occupations.map((occupation) => (
+                        <CommandItem
+                          value={occupation.charAt(0).toUpperCase() + occupation.slice(1)}
+                          key={occupation}
+                          onSelect={() => {
+                            form.setValue("occupation", occupation)
+                          }}
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              occupation === field.value
+                                ? "opacity-100"
+                                : "opacity-0"
+                            )}
+                          />
+                          {occupation.charAt(0).toUpperCase() + occupation.slice(1)}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+                <FormDescription>
+                  Please mention your occupation
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Separator />
+
           <FormField
             control={form.control}
             name="oss"

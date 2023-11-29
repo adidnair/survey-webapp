@@ -120,58 +120,6 @@
       "foreignKeys": {},
       "uniqueConstraints": {}
     },
-    "people": {
-      "name": "people",
-      "columns": {
-        "id": {
-          "autoincrement": false,
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "generated_id": {
-          "autoincrement": false,
-          "name": "generated_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "email": {
-          "autoincrement": false,
-          "name": "email",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "gender": {
-          "autoincrement": false,
-          "name": "gender",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "skill": {
-          "autoincrement": false,
-          "name": "skill",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "compositePrimaryKeys": {},
-      "indexes": {
-        "uuid": {
-          "name": "uuid",
-          "columns": [
-            "generated_id"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {},
-      "uniqueConstraints": {}
-    },
     "web_tech_responses": {
       "name": "web_tech_responses",
       "columns": {
@@ -992,6 +940,65 @@
           "onUpdate": "no action"
         }
       },
+      "uniqueConstraints": {}
+    },
+    "people": {
+      "name": "people",
+      "columns": {
+        "id": {
+          "autoincrement": false,
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "generated_id": {
+          "autoincrement": false,
+          "name": "generated_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "autoincrement": false,
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "gender": {
+          "autoincrement": false,
+          "name": "gender",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skill": {
+          "autoincrement": false,
+          "name": "skill",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "occupation": {
+          "autoincrement": false,
+          "name": "occupation",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "compositePrimaryKeys": {},
+      "indexes": {
+        "uuid": {
+          "name": "uuid",
+          "columns": [
+            "generated_id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
       "uniqueConstraints": {}
     }
   },

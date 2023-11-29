@@ -1,4 +1,4 @@
-import { sqliteTable, AnySQLiteColumn, text, integer, uniqueIndex, index, foreignKey } from "drizzle-orm/sqlite-core"
+import { sqliteTable, AnySQLiteColumn, text, integer, index, foreignKey, uniqueIndex } from "drizzle-orm/sqlite-core"
 import { sql } from "drizzle-orm"
 
 
@@ -23,19 +23,6 @@ export const databaseChoices = sqliteTable("database_choices", {
 	id: integer("id").primaryKey().notNull(),
 	name: text("name").notNull(),
 	verified: integer("verified").default(0).notNull(),
-});
-
-export const people = sqliteTable("people", {
-	id: integer("id").primaryKey().notNull(),
-	generatedId: text("generated_id").notNull(),
-	email: text("email").notNull(),
-	gender: text("gender").notNull(),
-	skill: text("skill").notNull(),
-},
-(table) => {
-	return {
-		uuid: uniqueIndex("uuid").on(table.generatedId),
-	}
 });
 
 export const webTechResponses = sqliteTable("web_tech_responses", {
@@ -174,5 +161,19 @@ export const otherTechResponses = sqliteTable("other_tech_responses", {
 	return {
 		otherTechPersonIdx: index("other_tech_person_idx").on(table.personId),
 		otherTechIdx: index("other_tech_idx").on(table.otherTechId),
+	}
+});
+
+export const people = sqliteTable("people", {
+	id: integer("id").primaryKey().notNull(),
+	generatedId: text("generated_id").notNull(),
+	email: text("email").notNull(),
+	gender: text("gender").notNull(),
+	skill: text("skill").notNull(),
+	occupation: text("occupation").notNull(),
+},
+(table) => {
+	return {
+		uuid: uniqueIndex("uuid").on(table.generatedId),
 	}
 });

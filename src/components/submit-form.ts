@@ -47,6 +47,7 @@ export const pushToDB = async (values: formType, id: number | null) => {
         email: values.email,
         gender: values.gender,
         skill: values.skill,
+        occupation: values.occupation,
       });
 
       if (values.oss.length !== 0) {
@@ -189,6 +190,7 @@ export const pushToDB = async (values: formType, id: number | null) => {
           email: values.email,
           gender: values.gender,
           skill: values.skill,
+          occupation: values.occupation,
         })
         .returning();
 
