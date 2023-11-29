@@ -498,8 +498,8 @@ const SurveyForm = () => {
             control={form.control}
             name="occupation"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Occupation</FormLabel>
+              <FormItem className="flex flex-col">
+                <FormLabel className="mb-1">Occupation</FormLabel>
                 <Popover>
                 <PopoverTrigger asChild>
                   <FormControl>
@@ -507,7 +507,7 @@ const SurveyForm = () => {
                       variant="outline"
                       role="combobox"
                       className={cn(
-                        "w-[200px] justify-between",
+                        "w-80 justify-between",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -520,11 +520,11 @@ const SurveyForm = () => {
                     </Button>
                   </FormControl>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
+                <PopoverContent className="w-80 p-0">
+                  <Command className="max-h-72">
                     <CommandInput placeholder="Search..." />
                     <CommandEmpty>No match found.</CommandEmpty>
-                    <CommandGroup>
+                      <CommandGroup className="overflow-y-scroll">
                       {occupations.map((occupation) => (
                         <CommandItem
                           value={occupation.charAt(0).toUpperCase() + occupation.slice(1)}
