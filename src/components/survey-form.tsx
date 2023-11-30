@@ -290,7 +290,7 @@ const SurveyForm = () => {
   return (
     <>
       <AlertDialog open={openModal} onOpenChange={setOpenModal}>
-        <AlertDialogContent className="flex flex-col justify-between h-1/3">
+        <AlertDialogContent className="flex flex-col justify-between rounded-md w-11/12 lg:h-1/3">
           {modalState === "confirm rewrite" && (
             <AlertDialogHeader>
               <>
